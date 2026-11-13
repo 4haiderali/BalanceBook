@@ -16,5 +16,5 @@ ${guide.sections.map(s=>`<a id="${s.id}"></a>
 ${s.paragraphs.join('\n\n')}`).join('\n\n')}
 `;
 const target=new URL('../docs/USER-GUIDE.md',import.meta.url);
-if(process.argv.includes('--check')){if(readFileSync(target,'utf8')!==text)throw Error('Regenerate docs/USER-GUIDE.md.');}
+if(process.argv.includes('--check')){if(readFileSync(target,'utf8').replace(/\r\n/g,'\n')!==text)throw Error('Regenerate docs/USER-GUIDE.md.');}
 else writeFileSync(target,text);
