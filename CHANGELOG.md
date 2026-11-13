@@ -1,9 +1,11 @@
 # Changelog
 
-## Unreleased — dependency maintenance
+## 1.2.27
 
-Patched the source dependency tree after enabling security alerts. npm audit reports zero known vulnerabilities; local typecheck, accounting, desktop build/report/recovery checks pass. Direct updates are pinned, and scoped development-tool overrides are documented in docs/DEPENDENCIES.md. Published 1.2.26 artifacts remain unchanged.
-
+- Add offline Help & guide in the app sidebar, with topic links and practical examples.
+- Add matching repository usage instructions, generated from shared content and checked in CI.
+- Include the dependency security maintenance previously available only on main; retain pinned versions and documented scoped overrides.
+- Keep existing ledger storage and installer behavior unchanged.
 
 ## 1.2.26
 

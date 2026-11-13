@@ -13,7 +13,7 @@
     "db:create": "wrangler d1 create haider-money",
     "db:local": "wrangler d1 migrations apply DB --local",
     "db:remote": "wrangler d1 migrations apply DB --remote",
-    "test": "node scripts/test-pwa.mjs && node scripts/test-v10-runner.mjs && node scripts/test-personal-runner.mjs && node scripts/test-accounting.mjs",
+    "test": "node scripts/generate-user-guide.mjs --check && node scripts/test-pwa.mjs && node scripts/test-v10-runner.mjs && node scripts/test-personal-runner.mjs && node scripts/test-accounting.mjs",
     "typecheck": "tsc --noEmit",
     "test:accounting": "node scripts/test-accounting.mjs"
   },

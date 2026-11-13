@@ -368,3 +368,6 @@ html:has(.modal-overlay) {overflow:hidden}
   background:white; box-shadow:0 4px 20px #15213930; color:var(--ink);
 }
 .undo-toast [role=status] {overflow-wrap:anywhere}
+
+/* Offline usage guide */
+.help-guide{max-width:960px}.help-guide p{max-width:78ch;line-height:1.8}.help-guide a{color:var(--green);text-decoration:underline;text-underline-offset:3px}.help-guide li{padding:5px 0}.sidebar{overflow-y:auto}

@@ -1,6 +1,6 @@
 # Dependency maintenance after 1.2.26
 
-The published 1.2.26 tag and installer are immutable, tested release artifacts. The main branch contains subsequent dependency maintenance; it is not a replacement executable release. Use the release tag when reproducing that installer.
+The published 1.2.26 tag and installer are immutable, tested release artifacts. Version 1.2.27 includes this dependency maintenance in its rebuilt app and installer. Use the matching release tag when reproducing either version.
 
 On 13 November 2026, enabling Dependabot exposed advisories in the source dependency tree. Main updates Next/React/RSC, Vite/esbuild, Zod and the Cloudflare/Vinext development toolchain to supported patched versions. Direct updates are pinned and package-lock.json records the transitive tree. npm audit reports zero known vulnerabilities for this updated checkout as of that date. This does not mean all possible vulnerabilities are absent, and the older release tag has its older dependency tree.
 

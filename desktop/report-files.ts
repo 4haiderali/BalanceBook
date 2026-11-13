@@ -175,7 +175,7 @@ export async function writeReportFiles({folder,ledger,revision,today,previous,fo
   years.set(year,yearEntries);
   const data=monthlyData(ledger,month,today);
   await output('Monthly',month+'.xlsx',sha(['monthly-v3',entries,ledger.people,ledger.accountSettings,ledger.categorySettings,data]),()=>{
-   const stamp='Generated '+new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Karachi',dateStyle:'medium',timeStyle:'short'}).format(new Date(state.at))+' PKT · Ledger revision '+revision+' · BalanceBook 1.2.26';
+   const stamp='Generated '+new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Karachi',dateStyle:'medium',timeStyle:'short'}).format(new Date(state.at))+' PKT · Ledger revision '+revision+' · BalanceBook 1.2.27';
    const {workbook,topHeader}=buildMonthlyWorkbook({...ledger,entries},month,data,stamp);
    return styleSummary(workbookBytes(workbook),topHeader);
   });

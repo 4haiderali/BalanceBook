@@ -1,4 +1,4 @@
-BalanceBook 1.2.26 for Windows x64
+BalanceBook 1.2.27 for Windows x64
 ==================================
 
 UPDATE YOUR EXISTING INSTALLATION

@@ -18,9 +18,13 @@ A local-first Windows money ledger for people who want to record expenses, trans
 
 ## Download for Windows
 
-**[Download the single-file installer](https://github.com/4haiderali/BalanceBook/releases/latest)** — choose the file ending in `Setup-x64.exe`. Current release: **1.2.26**. No separate payload folder is required.
+**[Download the single-file installer](https://github.com/4haiderali/BalanceBook/releases/latest)** — choose the file ending in `Setup-x64.exe`. Current release: **1.2.27**. No separate payload folder is required.
 
-The installer is **unsigned**. Windows may show Unknown Publisher or SmartScreen. Only run a download you trust; compare its SHA-256 with the release checksum using `Get-FileHash .\BalanceBook-1.2.26-Setup-x64.exe -Algorithm SHA256`. A matching checksum verifies file integrity, not publisher identity. Microsoft Edge WebView2 Runtime is required.
+The installer is **unsigned**. Windows may show Unknown Publisher or SmartScreen. Only run a download you trust; compare its SHA-256 with the release checksum using `Get-FileHash .\BalanceBook-1.2.27-Setup-x64.exe -Algorithm SHA256`. A matching checksum verifies file integrity, not publisher identity. Microsoft Edge WebView2 Runtime is required.
+
+## How to use BalanceBook
+
+Read the **[usage guide](docs/USER-GUIDE.md)** for everyday entries, transfers, loans, group payments, corrections, drafts and recovery. Version **1.2.27** includes the same offline guide in the sidebar under **Help & guide**.
 
 ## Get started
 
@@ -50,9 +54,9 @@ Use Windows **Installed apps → BalanceBook → Uninstall** to remove the appli
 
 ## Build and checks
 
-The main branch includes [dependency maintenance after 1.2.26](docs/DEPENDENCIES.md). Use the release tag for the exact published source; these later source updates do not replace the tested installer.
+Version 1.2.27 includes the [dependency maintenance after 1.2.26](docs/DEPENDENCIES.md). Use the matching release tag for the published source.
 
-Use Node.js 24: `npm ci`, `npm run typecheck`, then `npm test`. Windows packaging requires the .NET Framework compiler and runtime payload; single-file setup uses Inno Setup. Full commands and release checks: [Building](docs/BUILDING.md), [validation](docs/VALIDATION-1.2.26.md).
+Use Node.js 24: `npm ci`, `npm run typecheck`, then `npm test`. Windows packaging requires the .NET Framework compiler and runtime payload; single-file setup uses Inno Setup. Full commands and release checks: [Building](docs/BUILDING.md), [validation](docs/VALIDATION-1.2.27.md).
 
 ## Support and limitations
 

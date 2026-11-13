@@ -1,0 +1,111 @@
+{
+  "title": "How to use BalanceBook",
+  "intro": "Start with the first two topics, then use the others as needed. This guide works offline. Examples use fictional people and accounts.",
+  "sections": [
+    {
+      "id": "start",
+      "title": "First launch and accounts",
+      "paragraphs": [
+        "BalanceBook records your money; it does not connect to your bank or move money. Amounts are displayed in PKR. A new ledger starts with Cash, general categories and no transactions or people.",
+        "Open Accounts. Add your bank or wallet and enter opening balances as of the start of your records. Check opening balances before entering old transactions so money is not counted twice.",
+        "Use Categories to organize spending and People for anyone you lend to, borrow from or share costs with. Examples below are fictional."
+      ]
+    },
+    {
+      "id": "expense",
+      "title": "Expenses and income",
+      "paragraphs": [
+        "Choose Add transaction, then Expense or Income. Enter the actual date, description, amount and account. Choose the expense category and check the report month.",
+        "Review the balance changes, then choose Confirm and save once. Wait for Saved locally. If saving fails, read the error and check whether the entry exists before entering it again.",
+        "Example: an expense of PKR 500 from Cash reduces Cash by PKR 500. Income increases the selected account. The next expense can reuse your last active account and category; check these each time."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Transfers and Undo",
+      "paragraphs": [
+        "Choose Transfer, select source and destination accounts, enter the amount and review both balances before confirming.",
+        "Moving PKR 1,000 from Cash to Demo Bank reduces Cash by PKR 1,000 and increases Demo Bank by PKR 1,000. It is not spending or income.",
+        "Use the Undo prompt after a supported save to reverse it, then check both balances. If Undo is no longer available, open the entry and use its reviewed correction or deletion flow."
+      ]
+    },
+    {
+      "id": "loans",
+      "title": "Loans and repayments",
+      "paragraphs": [
+        "Use Lend money when you pay someone who will repay you. Use Borrow money when you receive money you owe back. Select the person and the account where money leaves or arrives.",
+        "Use Receive repayment when someone repays your loan. Use Repay borrowing when you repay what you owe. Review both the account and the person's outstanding balance.",
+        "A repayment cannot exceed the balance outstanding on its actual date. If rejected, check the person, date and earlier loan rather than recording unrelated income or spending."
+      ]
+    },
+    {
+      "id": "groups",
+      "title": "Group payments and receipts",
+      "paragraphs": [
+        "Open Group payments and choose New group payment when you pay for a group. Enter the total, your own share and the participants or assignments requested. Review funding and personal balances.",
+        "When someone reimburses you, open the original group payment and use its reimbursement action. Link the receipt to the payment and remaining share instead of recording unrelated income.",
+        "Example: you pay PKR 900, your share is PKR 300 and a friend owes PKR 600. A linked PKR 600 receipt settles that share. Check the original payment link and remaining amount in its details."
+      ]
+    },
+    {
+      "id": "history",
+      "title": "Search, corrections and deletion",
+      "paragraphs": [
+        "Open Transactions and search by description, account or person. Use account and date filters. Open an entry to inspect effects, related records and history.",
+        "Choose Edit to fix an entry, explain the correction when requested and review the changes before saving. History retains corrections and reasons.",
+        "Delete through the reviewed deletion flow. Deleted entries have zero current balance effect. Find them with the deleted filter and choose View / restore to review restoring one. Later linked receipts or repayments may prevent a change; inspect dependencies first.",
+        "Compare possible duplicate entries before choosing Both are real. A warning alone does not prove either record is wrong."
+      ]
+    },
+    {
+      "id": "drafts",
+      "title": "Drafts and keyboard controls",
+      "paragraphs": [
+        "Choose Save for later for a new transaction you want to finish later. Resume draft continues it. Drafts do not change balances. Discard draft removes a saved draft after confirmation.",
+        "Enter submits supported dialogs or opens review. Confirm and save is the final save action. Enter in multiline notes or native controls keeps normal behavior; Ctrl+Enter can submit a supported dialog.",
+        "Escape closes the top supported dialog first. Closing change review returns to the form without saving. Read unsaved-work choices before discarding.",
+        "With no dialog open, Ctrl+N opens a transaction and Ctrl+F opens search. The web browser may handle shortcuts depending on focus."
+      ]
+    },
+    {
+      "id": "reports",
+      "title": "Reports and reconciliation",
+      "paragraphs": [
+        "Use Overview for your position and Reports for monthly views. Actual date records when a transaction happened; report month controls its reporting period where supported. Check both if totals look unexpected.",
+        "Use Reconcile & Review to compare records with statements, inspect duplicates and recheck affected checkpoints. It does not fetch or certify bank balances.",
+        "Excel exports are reports. A filtered date-range workbook is not a full recovery backup."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Back up and verify",
+      "paragraphs": [
+        "Open Backup & recovery. On Windows, choose a dedicated export folder for automatic Monthly, Yearly, Summaries and Backups outputs.",
+        "Choose Save full JSON backup, then Choose JSON backup to verify the file. Backup health shows ledger revision, latest verified backup and location. Check that the backup includes the revision you need.",
+        "A file in a local OneDrive folder does not prove cloud upload. Check OneDrive separately and keep an independent copy on another device or storage location.",
+        "Use full JSON for recovery. Excel and screenshots cannot replace it. Never post real ledgers or backups in public issues or chats."
+      ]
+    },
+    {
+      "id": "restore",
+      "title": "Recover from JSON",
+      "paragraphs": [
+        "First save and verify a backup of the current ledger too. Choose Backup & recovery, then Recover from JSON backup and select a full BalanceBook JSON backup.",
+        "Review verification, counts and balances before confirming. Recovery replaces the working ledger; it does not merge ledgers. The Windows app validates separately and retains the former database.",
+        "JSON retains the snapshot and transaction audit, not the entire SQLite saved-version history. After recovery, compare accounts, people, corrections, deleted entries and linked receipts.",
+        "If startup fails, use recovery in the startup dialog. Preserve existing data before troubleshooting. Desktop data is normally under %LOCALAPPDATA%\\HaiderMoney\\Data; exported backups are in your chosen folder."
+      ]
+    },
+    {
+      "id": "support",
+      "title": "Updates and support",
+      "paragraphs": [
+        "Before updating, save and verify full JSON. Close normally or let setup request a normal close. Resolve unsaved work first; never force-close during a save.",
+        "Windows uninstall keeps your ledger, preferences and exports. Reinstall uses retained data. Use a separate Windows profile for an independent empty ledger.",
+        "For unexpected totals, check accounts, actual dates, report months, deleted entries and related repayments or receipts. For failed saves, keep the error and check whether the entry exists before retrying.",
+        "Report bugs at github.com/4haiderali/BalanceBook/issues with the version, steps, expected and actual results. Use fictional examples and redacted screenshots, never real financial records or credentials.",
+        "The installer is unsigned and WebView2 Runtime is required. Use the official release page and compare SHA-256 checksums. BalanceBook is a local ledger, not an encrypted vault."
+      ]
+    }
+  ]
+}
