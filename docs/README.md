@@ -7,3 +7,5 @@
 - [Release validation](VALIDATION-1.2.26.md)
 - [Contributing](../CONTRIBUTING.md)
 - [Security reporting](../SECURITY.md)
+
+- [Dependency maintenance](DEPENDENCIES.md)

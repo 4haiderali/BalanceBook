@@ -50,6 +50,8 @@ Use Windows **Installed apps → BalanceBook → Uninstall** to remove the appli
 
 ## Build and checks
 
+The main branch includes [dependency maintenance after 1.2.26](docs/DEPENDENCIES.md). Use the release tag for the exact published source; these later source updates do not replace the tested installer.
+
 Use Node.js 24: `npm ci`, `npm run typecheck`, then `npm test`. Windows packaging requires the .NET Framework compiler and runtime payload; single-file setup uses Inno Setup. Full commands and release checks: [Building](docs/BUILDING.md), [validation](docs/VALIDATION-1.2.26.md).
 
 ## Support and limitations
@@ -61,3 +63,4 @@ Tested on the Windows x64 PC described in the validation report. All Windows ver
 ## License
 
 Original project code is licensed under [MIT](LICENSE). Third-party components retain their licenses and notices; see [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+

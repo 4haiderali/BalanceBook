@@ -32,3 +32,8 @@ The package is unsigned. Earlier launches showed Windows Open File security warn
 
 `docs/images` contains the actual React UI rendered using isolated synthetic data in a browser preview. It is not evidence of native WebView2 acceptance or OneDrive upload. No real ledger, export path or backup is included.
 
+
+## Hosted checks
+
+The release source passed [Windows CI](https://github.com/4haiderali/BalanceBook/actions/runs/43424510296) and [CodeQL](https://github.com/4haiderali/BalanceBook/actions/runs/43424510293). CodeQL and secret-scanning alert lists were empty when checked. Subsequent source dependency updates are described in [Dependency maintenance](DEPENDENCIES.md); these do not change the published installer.
+
