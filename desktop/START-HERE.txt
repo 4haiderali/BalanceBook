@@ -1,0 +1,83 @@
+BalanceBook 1.2.26 for Windows x64
+==================================
+
+UPDATE YOUR EXISTING INSTALLATION
+
+1. In your current app, export a full JSON backup. Confirm the file exists and
+   passes the backup checker before closing the app.
+2. Extract this entire ZIP using Extract All.
+3. Run Install-BalanceBook.exe from the extracted folder and choose Update.
+   If BalanceBook is open, setup offers to close it before updating.
+4. Open BalanceBook and compare the transaction count, recent corrections,
+   account balances and amounts owed with your old app. Check Saved history.
+   An in-place update uses the existing database. Skip the import screen.
+
+Setup shows its progress while checking the ledger and installing the app.
+The program is installed under %LOCALAPPDATA%\Programs\HaiderMoney, with
+BalanceBook shortcuts on your Desktop and in your Start menu.
+
+Setup opens the candidate app against a disposable copy before replacing the
+installed program. If setup fails during this check, the existing installation
+remains available. If setup is interrupted during replacement, rerun setup
+from the extracted folder. The working ledger stays in its existing folder.
+Setup keeps one rotating pre-update copy at
+%LOCALAPPDATA%\HaiderMoney\Before latest update. Copies made by earlier
+installers are left alone. The former program is held during the swap and
+removed once replacement succeeds.
+
+CLEAN INSTALL OR RECOVERY
+
+A clean install into an empty ledger can use Overview > Import an existing
+backup. Choose the full JSON file, compare the figures and type MIGRATE.
+
+To recover an existing ledger, open Backup & recovery > Recover from JSON
+backup. If the app cannot start because the database is unreadable, choose No
+in the startup dialog to open recovery. The app validates the backup in a
+separate database and asks you to confirm after showing the figures. The
+former database is kept at %LOCALAPPDATA%\HaiderMoney\Data.recovery-original
+or a separate recovery folder if you recover again. JSON carries one ledger
+snapshot and its transaction audit. Earlier SQLite save versions are preserved
+in the former database.
+
+BACKUPS AND OFFLINE USE
+
+The working ledger stays in %LOCALAPPDATA%\HaiderMoney\Data. You can save
+verified JSON backups to OneDrive, a local folder or external storage.
+The app reports when the local file has been saved and verified. OneDrive
+handles cloud sync when it reconnects.
+
+AUTOMATIC REPORTS AND BACKUPS
+
+Open Backup & recovery and choose one export folder. Use a dedicated
+subfolder in OneDrive, or pick a different local folder. The app writes:
+
+  Monthly     One workbook per report month, with transactions and totals.
+  Yearly      One workbook per report year, with transactions and monthly totals.
+  Summaries   Formatted yearly totals, monthly comparison bars and categories.
+  Backups     Verified JSON snapshots, refreshed in the same dated file
+              as the ledger changes during the day.
+
+Automatic exports check on startup, after ledger saves, and while the
+app is open. Reports follow Report Month. Corrections refresh the
+affected reports. Missing Excel files are regenerated. Change folder
+to build the reports in a new location or use Rebuild all reports to
+regenerate them on demand. Earlier JSON recovery copies stay in the
+old folder. The automatic rotation keeps seven recent daily copies
+plus the last available copy for each completed month.
+
+Open Excel files can temporarily prevent replacement. Close the workbook
+and click Refresh now, or wait for the next retry. The status reports local
+writes. Check the OneDrive client for cloud sync.
+
+Microsoft Edge Evergreen WebView2 Runtime must already be installed. If
+needed, get it from https://developer.microsoft.com/microsoft-edge/webview2/ .
+The app and installer are unsigned. Windows may ask for confirmation.
+This ZIP includes source and build instructions under source/.
+
+VALIDATION STATUS
+
+The Windows executables were compiled. Accounting, original-to-new SQLite
+compatibility, recovery and persistence passed using synthetic data on Linux.
+Native Windows installation, WebView2 behavior, DPI and save dialogs still
+need the checks in source/desktop/WINDOWS-CHECKS.txt.
+

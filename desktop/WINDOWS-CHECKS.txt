@@ -1,0 +1,112 @@
+Windows acceptance checks
+=========================
+
+Use a Windows x64 test account or VM with a disposable ledger and keep a
+copy of the original installer. Perform these checks before using live data.
+
+1. With networking disabled and WebView2 installed, install the original
+   package. Import synthetic data with a historical correction, a deleted
+   entry, a refund, a loan and a linked group payment. Export full JSON.
+2. Close and install 1.2.26. Compare the ledger, audit, revisions, totals and
+   report-month values. Check Start menu and desktop shortcuts. Open the
+   installer while the app is open and verify that No leaves it open and Yes requests a normal close. Repeat with an unsaved draft and verify the app asks before discarding it.
+3. With the app closed, damage an asset in a separate extracted 1.2.26
+   package and run its installer. Setup must reject it and leave the
+   current installation usable. Run setup twice and verify only one rotating
+   pre-update copy is created by the new installer. On a disposable VM, interrupt setup during
+   replacement and rerun it. Verify the active installation and database.
+4. Enter an expense by mouse and by Ctrl+N, Tab and Ctrl+Enter. Verify it
+   saves once. Search for an older month with Ctrl+F and All dates, edit
+   it with a reason, and check that the table keeps its position and filters.
+   Check an expense with a possible duplicate still opens review. Try
+   closing with a draft and during a pending save.
+5. Export JSON to a local folder and to OneDrive while offline. Cancel
+   another export and try a write failure. Reject an export while recovery is
+   active and check the export controls recover. Verify saved status changes
+   only for the verified JSON and the ledger revision never changes.
+   Export Excel and verify it opens and leaves the backup stamp alone.
+6. Attempt recovery with a checksum-damaged file. Then restore a valid
+   backup to a disposable installation. Compare the restored totals and
+   audit and check that the original SQLite directory was retained.
+   Repeat with an unreadable working database.
+7. Test 100%, 125% and 150% scaling and a snapped window. Check that amount,
+   Check text sharpness against Edge and move between monitors with different scaling.
+   description, actions and keyboard focus are reachable. Test Windows
+   high contrast and large PKR amounts.
+8. Close or terminate near a save on a disposable database, reopen and
+   check SQLite integrity. Require either the previous revision or one
+   committed revision with the entry present once. Verify clean reopen
+   immediately after normal close.
+
+9. Scroll Overview and Transactions. Verify that Add transaction stays visible,
+   the overview summary scrolls away, and column headings stay above long tables.
+   Compare the transaction rows in Overview, Transactions and People.
+
+10. In Accounts, open Transfer, Withdraw cash and Deposit cash directly.
+    Check their source and destination accounts. In People, check that
+    lending and repayment are directly available and archive rules still apply.
+
+11. Save a shortcut, scroll to the end of Overview, and open its draft
+    directly. Cancel and confirm no transaction or reminder changed.
+
+12. In Backup & recovery, choose a dedicated OneDrive test folder. Confirm all
+    four folders populate, including prior periods. Open the summary workbook
+    in Excel and check the formatting. Leave it open, correct a transaction,
+    then close the workbook and verify the export retries. Delete an older
+    report or choose a fresh folder and confirm regeneration. Verify the JSON
+    in BalanceBook and confirm OneDrive uploads the file separately.
+
+13. From People, open a person and then a transaction. Scroll each dialog
+    to both ends and check that the background stays put and the close
+    buttons remain visible. Press Escape twice and check that the transaction
+    closes first, then the person dialog. Check Categories appears directly
+    above People in the sidebar and that Overview matches 1.2.1.
+
+14. At desktop width, check the bottom edge of Recent activity aligns with
+    the bottom of People. Check the panels stack in a narrow window.
+15. Export to folder A, switch to B, and move the last transaction out of
+    an old report month. Return to A and rebuild. Check the older month and
+    yearly totals no longer include the moved transaction.
+
+16. Rename an account used by a transfer and verify the new label and unchanged balance.
+    Delete an unused account and category. Archive a settled account and used category,
+    then verify both are absent in new-entry choices and can be restored.
+
+17. On a new Windows user profile, verify that the only starter account
+    is Cash and the seven general categories are present. Add a bank and
+    a category. Verify updating an existing installation preserves its lists.
+
+18. Press Enter to review a transaction or a group receipt, then Enter again
+    to confirm. Hold Enter and check it does not confirm the next dialog.
+    Check Enter in Notes inserts a new line and Ctrl+Enter can still submit.
+
+Update verification and month rollover
+- Install over 1.2.19 with an existing ledger. Setup should report a matching
+  ledger and a verification code. Open the app and confirm your entries.
+- Leave Overview open on the current report month over midnight in Pakistan
+  at month end. It should advance within 15 seconds, or when refocused.
+  If you selected an older report month, it should stay selected.
+
+Backup health and transaction history
+- Run setup over 1.2.22 with a disposable mixed ledger. Compare entries,
+  revisions, balances and audit history after installation and recovery.
+- In Backup & recovery, check that the automatic backup shows its path, time
+  and revision. Save a manual JSON backup and confirm its status updates.
+  Restart and confirm the manual record is retained while its file exists.
+- Open the configured backup folder. Compare the panel with the JSON checker
+  after another save, then check actual cloud delivery in OneDrive separately.
+- Review a corrected and deleted entry. Confirm the amount change and reason
+  are visible and the deleted entry shows zero current effect. Open a linked
+  group receipt and follow its payment link to review the remaining amount.
+
+Daily entry polish
+- Save an expense, restart, and open another expense. Check the previous
+  account and category are selected if active. Archive either and verify fallback.
+- Enter an unsaved new transaction and use Save for later. Restart and use
+  Resume draft. Check fields are restored and saving once clears the draft.
+- With an active draft, choose to keep it from the installer close prompt.
+  Then repeat and agree to discard it. Verify it does not resume after update.
+- Compare the two transaction amounts, accounts and dates in duplicate review.
+  Check a transfer's source and destination and the person picker's personal
+  balance labels. Verify negative balances still match the ledger.
+
