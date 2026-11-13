@@ -13,7 +13,7 @@ Release review on a Windows x64 test PC, 13 November 2026. No new feature work w
 | Ledger after update | Pass | Revision 10; 11 entries, 9 active, 2 deleted; 20 audit events. The original earlier baseline was revision 8 with 9 entries; two deliberate test entries had since been added. Final update/uninstall/reinstall comparisons use the revision-10 database, not the older baseline. |
 | Windows uninstall | Pass | Actual registered uninstaller exited 0, removed application folder and Desktop/Start menu shortcuts, retained byte-identical ledger. |
 | Windows reinstall | Pass | Final EXE exited 0, restored version 1.2.26 and both shortcuts; ledger remained byte-identical. |
-| Exact GitHub-downloaded installer | Pending | To be recorded after release upload/download and hash comparison. |
+| Exact GitHub-downloaded installer | Pass | Downloaded the final EXE from the private GitHub draft, SHA-256 matched local output (3b90561cdcf716d381ba07d5e4816f5aa589e1ce086fc0759279c6554ee88ef0). Actual Windows install exited 0, ProductVersion 1.2.26, ledger byte-identical. |
 | Fresh install and restore in a second Windows identity/VM | Blocked | No separate Windows profile/VM acceptance run was completed. Isolated service-level defaults and recovery were tested instead. |
 | Open-app No/Yes and retained unsaved draft, final wrapper | Blocked | Native Windows UI helper reached its action limit. Earlier tests exercised the older setup; they do not certify every final-wrapper interaction. Unattended setup explicitly refuses an open app. |
 | Final WebView2 daily-entry keyboard/dialog interactions | Blocked | Escape was verified in the preceding 1.2.25 native app. Full final-version Enter, stacked Escape, people picker, scrolling and transfer/Undo matrix was not repeated after the UI limit. |
@@ -31,3 +31,4 @@ The package is unsigned. Earlier launches showed Windows Open File security warn
 ## Screenshots
 
 `docs/images` contains the actual React UI rendered using isolated synthetic data in a browser preview. It is not evidence of native WebView2 acceptance or OneDrive upload. No real ledger, export path or backup is included.
+
