@@ -5,12 +5,17 @@ if((e.key==='Escape'||e.key==='Enter')&&!e.defaultPrevented&&!e.isComposing){
  let top:HTMLElement|undefined;
  let z=-Infinity;
  for(const overlay of overlays){
+  if(!overlay.getClientRects().length)continue;
   const layer=Number(getComputedStyle(overlay).zIndex)||0;
   if(layer>=z){top=overlay;z=layer}
  }
- if(e.key==='Escape'&&!e.repeat){
-  const close=top?.querySelector<HTMLButtonElement>('[data-dialog-close],.people-dialog-close,.account-editor-close,.group-dialog-close');
-  if(close&&!close.disabled){e.preventDefault();close.click();return true}
+ if(e.key==='Escape'&&top){
+  // One key press belongs to one overlay, even when it cannot close yet.
+  // Reuse its normal close action so draft confirmation is preserved.
+  e.preventDefault();
+  const close=top.querySelector<HTMLButtonElement>('button[data-dialog-close]');
+  if(!e.repeat&&!busy&&close&&!close.disabled)close.click();
+  return true;
  }
  if(e.key==='Enter'&&top&&!e.altKey&&!e.metaKey&&!e.shiftKey){
   const target=e.target instanceof Element?e.target:null;

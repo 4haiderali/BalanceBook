@@ -20,7 +20,7 @@ export function BalanceCheck({ledger,account,today,saving,saveError,onClose,onSa
  const difference=calculated===null||entered===undefined?null:entered-calculated;
  const name=itemName(ledger,'account',account);
  return <div className="modal-overlay entry-overlay"><section className="modal balance-check-dialog" role="dialog" aria-modal="true" aria-labelledby="balance-check-title">
-  <div className="modal-heading"><h2 id="balance-check-title">Confirm balance · {name}</h2><button className="account-editor-close" aria-label="Close balance check" disabled={saving} onClick={onClose}><X size={21}/></button></div>
+  <div className="modal-heading"><h2 id="balance-check-title">Confirm balance · {name}</h2><button data-dialog-close className="account-editor-close" aria-label="Close balance check" disabled={saving} onClick={onClose}><X size={21}/></button></div>
   <form onSubmit={async event=>{
    event.preventDefault();setError('');
    try{
