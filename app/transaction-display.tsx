@@ -24,7 +24,7 @@ export function TransactionCells({entry,ledger,onOpen,displayAmount=entry.amount
  const destination=transfer?(entry.to||(incomingAccounts.length===1?incomingAccounts[0][0]:'')):'';
  const destinationLabel=destination?' · to '+itemName(ledger,'account',destination):'';
  const person=personName(ledger,entry.person);
- const category=itemName(ledger,'category',entry.category)||'—';
+ const category=transfer?'—':itemName(ledger,'category',entry.category)||'—';
  const actualDate=new Date(entry.date+'T00:00:00Z');
  return <>
   <td><button className="transaction-name transaction-open" onClick={onOpen} aria-label={'Open transaction: '+entry.description+destinationLabel}>

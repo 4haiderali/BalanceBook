@@ -173,7 +173,7 @@ internal sealed class LedgerWindow : Form
             };
             core.WebMessageReceived += ReceiveMessage;
             core.DownloadStarting += ChooseExportLocation;
-            core.Navigate(origin.AbsoluteUri);
+            core.Navigate(origin.AbsoluteUri + (probe ? "?setupProbe=1" : ""));
             await Task.Delay(TimeSpan.FromSeconds(35));
             if (!IsDisposed && !Ready) ShowStartupError("The ledger service opened, but the interface did not become ready.");
         }

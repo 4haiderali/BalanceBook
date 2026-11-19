@@ -1,3 +1,4 @@
+import {repairTransferCategories,TRANSFER_CATEGORY_REPAIR} from './transfer-categories';
 import type {Ledger} from './ledger';
 import {appendAudit,checkTransition} from './v2';
 export async function prepareWrite(previous:Ledger,payload:{data?:Ledger;reason?:string;operation?:string;restoreRevision?:number},lookupSnapshot:(revision:number)=>Promise<Ledger|null>){
@@ -9,6 +10,8 @@ export async function prepareWrite(previous:Ledger,payload:{data?:Ledger;reason?
  }else if(operation==='save'||operation==='import'){
   if(!payload.data)throw Error('Missing ledger data.');data=payload.data;
  }else throw Error('Unknown save operation.');
+ const repair=repairTransferCategories(data);data=repair.data;
+ if(repair.count)reason=reason?reason+' · '+TRANSFER_CATEGORY_REPAIR:TRANSFER_CATEGORY_REPAIR;
  const checked=checkTransition(previous,data,reason,operation==='save'?'edit':'replacement');
  return {data:appendAudit(previous,checked,reason),reason};
 }

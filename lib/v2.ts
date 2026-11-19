@@ -1,3 +1,4 @@
+import {isTransfer} from './transfer-categories';
 import {checkActiveEntryItems,validateLedgerItems} from './ledger-items';
 import {validateParking,validateParkingTransition,parkingSummary} from './parking';
 import {completeShortcut} from './shortcuts';
@@ -81,7 +82,7 @@ function replayEditedLedger(next:Ledger,old?:Entry,replacement?:Entry){
  }
 }
 export function prepareEntry(l:Ledger,raw:Entry,old?:Entry):Ledger{
- const n=normalize(l);raw={...raw,person:resolvePerson(n,raw.person),splits:raw.splits?.map(s=>({...s,person:resolvePerson(n,s.person)})),group:raw.group?{...raw.group,assignments:raw.group.assignments.map(a=>({...a,person:resolvePerson(n,a.person)}))}:undefined};
+ const n=normalize(l);raw={...raw,category:isTransfer(raw)?'':raw.category,person:resolvePerson(n,raw.person),splits:raw.splits?.map(s=>({...s,person:resolvePerson(n,s.person)})),group:raw.group?{...raw.group,assignments:raw.group.assignments.map(a=>({...a,person:resolvePerson(n,a.person)}))}:undefined};
  const oldKeys=new Set([old?.person,...(old?.splits||[]).map(s=>s.person),...(old?.group?.assignments||[]).map(a=>a.person)]);const keys=[raw.person,...(raw.splits||[]).map(s=>s.person),...(raw.group?.assignments||[]).map(a=>a.person)];for(const key of keys){const p=n.people!.find(p=>p.key===key);if(p?.archived&&!oldKeys.has(key))throw Error(`${p.name} is archived. Restore them in People before using them.`)}
  let e:Entry;
  if(old?.kind==='legacy')e=correctLegacy(raw,old,n.baselineDate,accountNames(n),n.tailoringVersion?'Alfalah':'Legacy Current');

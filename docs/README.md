@@ -5,6 +5,7 @@
 - [Installation/removal](INSTALLATION.md)
 - [Recovery/data locations](RECOVERY.md)
 - [Architecture](ARCHITECTURE.md)
+- [1.2.29 validation](VALIDATION-1.2.29.md)
 - [1.2.28 validation](VALIDATION-1.2.28.md)
 - [1.2.27 validation](VALIDATION-1.2.27.md)
 - [Release validation](VALIDATION-1.2.26.md)

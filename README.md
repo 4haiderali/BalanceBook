@@ -18,9 +18,9 @@ A local-first Windows money ledger for people who want to record expenses, trans
 
 ## Download for Windows
 
-**[Download the single-file installer](https://github.com/4haiderali/BalanceBook/releases/latest)** — choose the file ending in `Setup-x64.exe`. Current release: **1.2.28**. No separate payload folder is required.
+**[Download the single-file installer](https://github.com/4haiderali/BalanceBook/releases/latest)** — choose the file ending in `Setup-x64.exe`. Current release: **1.2.29**. No separate payload folder is required.
 
-The installer is **unsigned**. Windows may show Unknown Publisher or SmartScreen. Only run a download you trust; compare its SHA-256 with the release checksum using `Get-FileHash .\BalanceBook-1.2.28-Setup-x64.exe -Algorithm SHA256`. A matching checksum verifies file integrity, not publisher identity. Microsoft Edge WebView2 Runtime is required.
+The installer is **unsigned**. Windows may show Unknown Publisher or SmartScreen. Only run a download you trust; compare its SHA-256 with the release checksum using `Get-FileHash .\BalanceBook-1.2.29-Setup-x64.exe -Algorithm SHA256`. A matching checksum verifies file integrity, not publisher identity. Microsoft Edge WebView2 Runtime is required.
 
 ## How to use BalanceBook
 
@@ -39,6 +39,8 @@ Open **Backup & recovery → Save full JSON backup**, then use **Choose JSON bac
 
 To restore, choose **Recover from JSON backup**, select a full JSON backup, review the figures and confirm. The app stages validation separately and retains the former database. JSON retains the ledger snapshot and its transaction audit; it does not carry the entire SQLite saved-version history. See [Recovery and data locations](docs/RECOVERY.md).
 
+Version 1.2.29 automatically removes leftover spending categories from previously saved transfers when the app opens. It records an audited correction in a new revision while preserving original imports, previous versions, amounts and balances. Old saved snapshots and old exported files retain their historical contents; automatic exports refresh from the corrected current ledger.
+
 ## Update, uninstall and reinstall
 
 Before updating important records, save and verify a backup. Setup verifies a disposable copy before replacing the app and requests a normal close. Keeping an open draft prevents replacement.
@@ -56,7 +58,7 @@ Use Windows **Installed apps → BalanceBook → Uninstall** to remove the appli
 
 Version 1.2.27 includes the [dependency maintenance after 1.2.26](docs/DEPENDENCIES.md). Use the matching release tag for the published source.
 
-Use Node.js 24: `npm ci`, `npm run typecheck`, then `npm test`. Windows packaging requires the .NET Framework compiler and runtime payload; single-file setup uses Inno Setup. Full commands and release checks: [Building](docs/BUILDING.md), [validation](docs/VALIDATION-1.2.28.md).
+Use Node.js 24: `npm ci`, `npm run typecheck`, then `npm test`. Windows packaging requires the .NET Framework compiler and runtime payload; single-file setup uses Inno Setup. Full commands and release checks: [Building](docs/BUILDING.md), [validation](docs/VALIDATION-1.2.29.md).
 
 ## Support and limitations
 

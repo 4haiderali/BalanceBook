@@ -1,3 +1,4 @@
+import {repairTransferCategories,TRANSFER_CATEGORY_REPAIR} from '../../../lib/transfer-categories';
 import {LEDGER_BYTES} from '../../../lib/backup-limits';
 import { env } from 'cloudflare:workers';
 import {getOwner,requireSameOrigin} from '../../../lib/personal-auth';
@@ -55,14 +56,20 @@ export async function POST(request:Request){
  if(!env.DB)return response({error:'Database unavailable.'},503);
  try{
  const body=await request.text();if(new TextEncoder().encode(body).length>LEDGER_BYTES)return response({error:'The ledger exceeds the supported save size.'},413);
- const {data:incoming,revision,reason,operation='save',restoreRevision}=JSON.parse(body);let data:Ledger;if(!Number.isSafeInteger(revision)||revision<0)throw Error('Invalid revision.');
+ const {data:provided,revision,reason,operation='save',restoreRevision}=JSON.parse(body);let data:Ledger;if(!Number.isSafeInteger(revision)||revision<0)throw Error('Invalid revision.');
  measure('body');
- const prior=await env.DB.prepare('SELECT data,revision FROM ledger_versions WHERE owner=? ORDER BY revision DESC LIMIT 1').bind(user.userId).first<any>();
+ const prior=await env.DB.prepare('SELECT data,revision,created_at FROM ledger_versions WHERE owner=? ORDER BY revision DESC LIMIT 1').bind(user.userId).first<any>();
  if((prior?.revision||0)!==revision)return response({error:'The ledger changed since this draft opened.'},409);
- if(operation!=='save')throw Error('File import and whole-ledger restore are disabled. Existing transactions are retained.');
+ if(operation!=='save'&&operation!=='repair-transfer-categories')throw Error('File import and whole-ledger restore are disabled. Existing transactions are retained.');
+ let incoming=provided;
  const verifiedBlocks=new Set<string>();
  const previous=prior?await readLedger(env.DB,user.userId,prior.data,verifiedBlocks):emptyLedger();
  measure('load');
+ if(operation==='repair-transfer-categories'){
+  const repair=repairTransferCategories(previous);
+  if(!repair.count)return response({data:normalize(previous),revision,savedAt:prior?.created_at});
+  incoming=repair.data;
+ }
  if((env as typeof env & {DESKTOP_LOCAL?:boolean}).DESKTOP_LOCAL&&Array.isArray(incoming?.entries)){
   const people=new Map(normalize(previous).people!.map(p=>[p.key,p]));
   const entries=new Map(previous.entries.map(e=>[e.id,e]));
@@ -78,7 +85,7 @@ export async function POST(request:Request){
    }
   }
  }
- const prepared=await prepareWrite(previous,{data:incoming,revision,reason,operation,restoreRevision} as any,async selected=>{
+ const prepared=await prepareWrite(previous,{data:incoming,revision,reason:operation==='repair-transfer-categories'?TRANSFER_CATEGORY_REPAIR:reason,operation:'save',restoreRevision} as any,async selected=>{
  const snapshot=await env.DB!.prepare('SELECT data FROM ledger_versions WHERE owner=? AND revision=?').bind(user.userId,selected).first<any>();return snapshot?await readLedger(env.DB!,user.userId,snapshot.data):null;
  });data=prepared.data;const savedReason=prepared.reason;
  if(new TextEncoder().encode(JSON.stringify(data)).length>LEDGER_BYTES)return response({error:'This save would exceed the supported backup size.'},413);

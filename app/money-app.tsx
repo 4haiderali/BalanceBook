@@ -1,6 +1,7 @@
 'use client';
 import {formatMoney as money} from '../lib/display-format';
 import {createTransactionUndo,undoTransaction,type TransactionUndo} from '../lib/transaction-undo';
+import {repairTransferCategories} from '../lib/transfer-categories';
 import {HelpPanel} from './help-panel';
 import {ReportsPanel} from './reports-panel';
 import {Stat} from './stat';
@@ -207,7 +208,13 @@ export default function MoneyApp(){
   return ()=>window.removeEventListener('keydown',handle);
  });
 
- async function load(){setUndo(null);setLoading(true);setError('');try{const r=await fetch('/api/ledger',{cache:'no-store'});const j=await readLedgerResponse(r,'load the ledger');if(j.setupWarning)setError(j.setupWarning);setLedger(normalize(j.data));setRevision(j.revision);setSavedAt(j.savedAt)}catch(e){setError(String(e instanceof Error?e.message:e))}finally{setLoading(false)}}
+ async function load(){setUndo(null);setLoading(true);setError('');try{const r=await fetch('/api/ledger',{cache:'no-store'});let j=await readLedgerResponse(r,'load the ledger');
+ if(!new URLSearchParams(window.location.search).has('setupProbe')&&repairTransferCategories(j.data).count){
+  const repaired=await fetch('/api/ledger',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({revision:j.revision,operation:'repair-transfer-categories'})});
+  if(repaired.status===409)j=await readLedgerResponse(await fetch('/api/ledger',{cache:'no-store'}),'reload the ledger');
+  else {j=await readLedgerResponse(repaired,'repair transfer categories');setNotice('Transfer categories corrected. Amounts and balances are unchanged.');}
+ }
+ if(j.setupWarning)setError(j.setupWarning);setLedger(normalize(j.data));setRevision(j.revision);setSavedAt(j.savedAt)}catch(e){setError(String(e instanceof Error?e.message:e))}finally{setLoading(false)}}
  useEffect(()=>{load()},[]);
  useEffect(()=>{if(ledger&&!loading)desktopHost()?.postMessage('state:ready')},[ledger,loading]);
  useEffect(()=>{if(page==='backup')fetch('/api/ledger?history=1').then(r=>r.json()).then((j:any)=>setHistory(j.history||[])).catch(()=>setError('Could not load saved versions.'))},[page,revision]);
@@ -272,7 +279,7 @@ export default function MoneyApp(){
   const to=activeItems(ledger,'account').filter(key=>key!==account);
   return {...base,account,to:to.includes(base.to)?base.to:to[0]||'',category:preferredItem(ledger,'category',previous?.category||base.category)};
  }
- function openEntry(kind='expense'){resetEntry();if(['officeRecovery','merchantRefund'].includes(kind)){setRecoveryEditor({kind});return}setEntryContext('');setForm({...newForm(),kind,...kind==='weeklyShare'&&{foodRange:nextFoodShareRange(ledger!,today())},category:['splitwiseShare','lunchAdvance','lunchRecovery','splitwiseFunding','weeklyShare'].includes(kind)?'Food':kind==='income'?incomeCategory():newForm().category});setEditId(null);setEditReason('');setFormError('');setModal(true)}
+ function openEntry(kind='expense'){resetEntry();if(['officeRecovery','merchantRefund'].includes(kind)){setRecoveryEditor({kind});return}setEntryContext('');setForm({...newForm(),kind,...kind==='weeklyShare'&&{foodRange:nextFoodShareRange(ledger!,today())},category:kind==='transfer'?'':['splitwiseShare','lunchAdvance','lunchRecovery','splitwiseFunding','weeklyShare'].includes(kind)?'Food':kind==='income'?incomeCategory():newForm().category});setEditId(null);setEditReason('');setFormError('');setModal(true)}
  function useShortcut(shortcut:Shortcut){
   if([shortcut.account,shortcut.to].some(key=>key&&itemStatus(ledger!,'account',key)!=='active')
    ||shortcut.category&&itemStatus(ledger!,'category',shortcut.category)!=='active'){
@@ -384,7 +391,7 @@ export default function MoneyApp(){
     const destinations=activeItems(ledger,'account').filter(key=>key!==a);
     return <tr key={a}><td><strong>{label}</strong></td><td>{type[0].toUpperCase()+type.slice(1)}</td><td className="right"><strong>{money(position.accounts[a]||0)}</strong>{position.accounts[a]<0&&<small>Payments exceed the opening balance and receipts.</small>}</td>
      <td><div className="button-row account-actions">
-      {!showArchivedAccounts&&destinations.length>0&&<button className="button" onClick={()=>{openEntry('transfer');setForm({...newForm(),kind:'transfer',account:a,to:destinations.includes('BOP Savings')?'BOP Savings':destinations[0]})}}>Transfer</button>}
+      {!showArchivedAccounts&&destinations.length>0&&<button className="button" onClick={()=>{openEntry('transfer');setForm({...newForm(),kind:'transfer',category:'',account:a,to:destinations.includes('BOP Savings')?'BOP Savings':destinations[0]})}}>Transfer</button>}
       {!showArchivedAccounts&&a!=='Cash'&&itemStatus(ledger,'account','Cash')==='active'&&<>
        <button className="button" onClick={()=>{openEntry('transfer');setEntryContext('Withdraw cash');setForm({...newForm(),kind:'transfer',description:'Cash withdrawal from '+label,account:a,to:'Cash',category:''})}}>Withdraw cash</button>
        <button className="button" onClick={()=>{openEntry('transfer');setEntryContext('Deposit cash');setForm({...newForm(),kind:'transfer',description:'Cash deposit into '+label,account:'Cash',to:a,category:''})}}>Deposit cash</button>

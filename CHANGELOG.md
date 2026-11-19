@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.2.29
+
+- Prevent transfers from retaining a hidden expense category such as Food, including stale drafts and shortcuts at the save boundary.
+- Automatically repair categories on saved transfers, including deleted and known legacy transfers, through a revision-checked save on opening the app.
+- Retain original imported values, prior saved versions and correction audit; keep amounts, accounts, links and balance effects unchanged.
+- Show no spending category for transfers in the transaction list.
+
 ## 1.2.28
 
 - Make Escape close category details, group receipts, shortcuts, refund/recovery editors, month links and deletion confirmation through their normal close actions.

@@ -22,4 +22,5 @@ jobs:
       - run: node --import tsx desktop/smoke.mjs
       - run: node --import tsx desktop/ledger-items-smoke.mjs
       - run: node --import tsx desktop/reports-smoke.mjs
+      - run: node --import tsx desktop/transfer-categories-smoke.mjs
       - run: node --import tsx desktop/recovery-smoke.mjs
