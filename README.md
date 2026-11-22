@@ -24,18 +24,18 @@ The installer is **unsigned**. Windows may show Unknown Publisher or SmartScreen
 
 ## How to use BalanceBook
 
-Read the **[usage guide](docs/USER-GUIDE.md)** for everyday entries, transfers, loans, group payments, corrections, drafts and recovery. Version **1.2.27** includes the same offline guide in the sidebar under **Help & guide**.
+Read the **[usage guide](docs/USER-GUIDE.md)** for everyday entries, transfers, loans, group payments, corrections, drafts and recovery. The same offline guide is available under **Settings > Help & guide**.
 
 ## Get started
 
 1. Install and open BalanceBook. A new desktop ledger starts with Cash and seven general categories, with no people, transactions or opening balances.
 2. Add your own bank/wallet in Accounts and enter verified opening balances.
 3. Add an expense. Check its account, category and date, then review the balance effects and confirm once.
-4. Choose a dedicated export folder in Backup & recovery. Confirm that a verified JSON backup exists.
+4. Choose a dedicated export folder in Settings > Backup & recovery. Confirm that a verified JSON backup exists.
 
 ## Back up and restore
 
-Open **Backup & recovery → Save full JSON backup**, then use **Choose JSON backup** to verify the file. Automatic exports create Monthly, Yearly, Summaries and Backups subfolders. A local OneDrive path does not prove that OneDrive uploaded the file.
+Open **Settings > Backup & recovery → Save full JSON backup**, then use **Choose JSON backup** to verify the file. Automatic exports create Monthly, Yearly, Summaries and Backups subfolders. A local OneDrive path does not prove that OneDrive uploaded the file.
 
 To restore, choose **Recover from JSON backup**, select a full JSON backup, review the figures and confirm. The app stages validation separately and retains the former database. JSON retains the ledger snapshot and its transaction audit; it does not carry the entire SQLite saved-version history. See [Recovery and data locations](docs/RECOVERY.md).
 

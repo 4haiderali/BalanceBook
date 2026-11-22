@@ -5,7 +5,7 @@ const text=`<!-- Generated from content/user-guide.json. Run node scripts/genera
 
 ${guide.intro}
 
-Open **Help & guide** in the app sidebar. Included in Windows builds starting with **1.2.27**.
+Open **Settings > Help & guide** in the app. Included in Windows builds starting with **1.2.27**.
 
 ${guide.sections.map(s=>`- [${s.title}](#${s.id})`).join('\n')}
 

@@ -14,7 +14,7 @@ function Swatch({id}:{id:ThemePreference}){
  return <span className="theme-swatch" aria-hidden="true">{id==='system'?<>{preview('light','left')}{preview('dark','right')}</>:preview(id)}</span>;
 }
 
-export function SettingsPanel({navigate}:{navigate:(page:string)=>void}){
+export function SettingsPanel(){
  const {preference,resolved}=useThemePreference();
  return <div className="settings-page">
   <section className="panel settings-section" aria-labelledby="settings-appearance">
@@ -30,14 +30,6 @@ export function SettingsPanel({navigate}:{navigate:(page:string)=>void}){
     </label>)}
    </fieldset>
    <p className="settings-status" role="status">Showing the {resolved} theme{preference==='system'?' because your system is set to '+resolved+'.':'.'}</p>
-  </section>
-  <section className="panel settings-section" aria-labelledby="settings-data">
-   <h2 id="settings-data">Your data</h2>
-   <p>Your ledger is stored on this computer. Backups, exports and recovery are on their own page.</p>
-   <div className="settings-actions">
-    <button className="button" onClick={()=>navigate('backup')}>Backup &amp; recovery</button>
-    <button className="button" onClick={()=>navigate('help')}>Help &amp; guide</button>
-   </div>
   </section>
  </div>;
 }

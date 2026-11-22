@@ -49,7 +49,7 @@ copy of the original installer. Perform these checks before using live data.
 11. Save a shortcut, scroll to the end of Overview, and open its draft
     directly. Cancel and confirm no transaction or reminder changed.
 
-12. In Backup & recovery, choose a dedicated OneDrive test folder. Confirm all
+12. In Settings > Backup & recovery, choose a dedicated OneDrive test folder. Confirm all
     four folders populate, including prior periods. Open the summary workbook
     in Excel and check the formatting. Leave it open, correct a transaction,
     then close the workbook and verify the export retries. Delete an older
@@ -90,7 +90,7 @@ Update verification and month rollover
 Backup health and transaction history
 - Run setup over 1.2.22 with a disposable mixed ledger. Compare entries,
   revisions, balances and audit history after installation and recovery.
-- In Backup & recovery, check that the automatic backup shows its path, time
+- In Settings > Backup & recovery, check that the automatic backup shows its path, time
   and revision. Save a manual JSON backup and confirm its status updates.
   Restart and confirm the manual record is retained while its file exists.
 - Open the configured backup folder. Compare the panel with the JSON checker

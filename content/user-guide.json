@@ -80,7 +80,7 @@
       "id": "backup",
       "title": "Back up and verify",
       "paragraphs": [
-        "Open Backup & recovery. On Windows, choose a dedicated export folder for automatic Monthly, Yearly, Summaries and Backups outputs.",
+        "Open Settings > Backup & recovery. On Windows, choose a dedicated export folder for automatic Monthly, Yearly, Summaries and Backups outputs.",
         "Choose Save full JSON backup, then Choose JSON backup to verify the file. Backup health shows ledger revision, latest verified backup and location. Check that the backup includes the revision you need.",
         "A file in a local OneDrive folder does not prove cloud upload. Check OneDrive separately and keep an independent copy on another device or storage location.",
         "Use full JSON for recovery. Excel and screenshots cannot replace it. Never post real ledgers or backups in public issues or chats."
@@ -90,7 +90,7 @@
       "id": "restore",
       "title": "Recover from JSON",
       "paragraphs": [
-        "First save and verify a backup of the current ledger too. Choose Backup & recovery, then Recover from JSON backup and select a full BalanceBook JSON backup.",
+        "First save and verify a backup of the current ledger too. Choose Settings > Backup & recovery, then Recover from JSON backup and select a full BalanceBook JSON backup.",
         "Review verification, counts and balances before confirming. Recovery replaces the working ledger; it does not merge ledgers. The Windows app validates separately and retains the former database.",
         "JSON retains the snapshot and transaction audit, not the entire SQLite saved-version history. After recovery, compare accounts, people, corrections, deleted entries and linked receipts.",
         "If startup fails, use recovery in the startup dialog. Preserve existing data before troubleshooting. Desktop data is normally under %LOCALAPPDATA%\\HaiderMoney\\Data; exported backups are in your chosen folder."

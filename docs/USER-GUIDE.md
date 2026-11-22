@@ -3,7 +3,7 @@
 
 Start with the first two topics, then use the others as needed. This guide works offline. Examples use fictional people and accounts.
 
-Open **Help & guide** in the app sidebar. Included in Windows builds starting with **1.2.27**.
+Open **Settings > Help & guide** in the app. Included in Windows builds starting with **1.2.27**.
 
 - [First launch and accounts](#start)
 - [Expenses and income](#expense)
@@ -106,7 +106,7 @@ Excel exports are reports. A filtered date-range workbook is not a full recovery
 
 ## Back up and verify
 
-Open Backup & recovery. On Windows, choose a dedicated export folder for automatic Monthly, Yearly, Summaries and Backups outputs.
+Open Settings > Backup & recovery. On Windows, choose a dedicated export folder for automatic Monthly, Yearly, Summaries and Backups outputs.
 
 Choose Save full JSON backup, then Choose JSON backup to verify the file. Backup health shows ledger revision, latest verified backup and location. Check that the backup includes the revision you need.
 
@@ -118,7 +118,7 @@ Use full JSON for recovery. Excel and screenshots cannot replace it. Never post 
 
 ## Recover from JSON
 
-First save and verify a backup of the current ledger too. Choose Backup & recovery, then Recover from JSON backup and select a full BalanceBook JSON backup.
+First save and verify a backup of the current ledger too. Choose Settings > Backup & recovery, then Recover from JSON backup and select a full BalanceBook JSON backup.
 
 Review verification, counts and balances before confirming. Recovery replaces the working ledger; it does not merge ledgers. The Windows app validates separately and retains the former database.
 

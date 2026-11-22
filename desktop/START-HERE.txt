@@ -30,7 +30,7 @@ CLEAN INSTALL OR RECOVERY
 A clean install into an empty ledger can use Overview > Import an existing
 backup. Choose the full JSON file, compare the figures and type MIGRATE.
 
-To recover an existing ledger, open Backup & recovery > Recover from JSON
+To recover an existing ledger, open Settings > Backup & recovery > Recover from JSON
 backup. If the app cannot start because the database is unreadable, choose No
 in the startup dialog to open recovery. The app validates the backup in a
 separate database and asks you to confirm after showing the figures. The
@@ -48,7 +48,7 @@ handles cloud sync when it reconnects.
 
 AUTOMATIC REPORTS AND BACKUPS
 
-Open Backup & recovery and choose one export folder. Use a dedicated
+Open Settings > Backup & recovery and choose one export folder. Use a dedicated
 subfolder in OneDrive, or pick a different local folder. The app writes:
 
   Monthly     One workbook per report month, with transactions and totals.
