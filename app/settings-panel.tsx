@@ -44,7 +44,7 @@ const FORMAT_GROUPS=[
 ] as const;
 
 export function FormatsPanel({preferences}:{preferences:DisplayPreferences}){
- return <section className="panel settings-section prose" aria-labelledby="settings-formats">
+ return <div className="settings-page"><section className="panel settings-section settings-formats prose" aria-labelledby="settings-formats">
   <h2 id="settings-formats">Formats</h2>
   <div className="form-grid">{FORMAT_GROUPS.map(({key,label,labels})=><label key={key}>{label}
    <select value={preferences[key]} onChange={event=>saveDisplayPreferences({...preferences,[key]:event.target.value})}>
@@ -54,5 +54,5 @@ export function FormatsPanel({preferences}:{preferences:DisplayPreferences}){
   </label>)}</div>
   <p role="status">Preview: {formatCurrency(123456750)} {'\u00b7'} {formatDate('2026-11-21')} {'\u00b7'} {formatDateTime('2026-11-21T18:06:00Z')}</p>
   <button type="button" className="button" onClick={()=>saveDisplayPreferences(DEFAULT_DISPLAY)}>Reset to defaults</button>
- </section>;
+ </section></div>;
 }

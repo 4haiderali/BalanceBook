@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useId,useState,type ReactNode} from 'react';
 import {accountType,type AccountType} from '../lib/accounts';
 import {itemHasHistory,itemName,itemStatus,manageLedgerItem,type ItemKind} from '../lib/ledger-items';
 import type {Ledger} from '../lib/ledger';
@@ -8,11 +8,12 @@ export function AccountTypeOptions(){
  return <>{ACCOUNT_TYPES.map(type=><option key={type} value={type}>{type[0].toUpperCase()+type.slice(1)}</option>)}</>;
 }
 
-export function LedgerItemActions({ledger,kind,itemKey,onSave,balance=0}:{
- ledger:Ledger;kind:ItemKind;itemKey:string;onSave:(ledger:Ledger,reason:string)=>Promise<boolean>;balance?:number;
+export function LedgerItemActions({ledger,kind,itemKey,onSave,balance=0,extraActions}:{
+ ledger:Ledger;kind:ItemKind;itemKey:string;onSave:(ledger:Ledger,reason:string)=>Promise<boolean>;balance?:number;extraActions?:ReactNode;
 }){
  const label=itemName(ledger,kind,itemKey),archived=itemStatus(ledger,kind,itemKey)==='archived';
  const account=kind==='account';
+ const formId=useId();
  const [editing,setEditing]=useState(false),[name,setName]=useState(label),[type,setType]=useState(()=>accountType(ledger,itemKey)),[error,setError]=useState(''),[busy,setBusy]=useState(false);
  const unchanged=account&&name===label&&type===accountType(ledger,itemKey);
  async function apply(action:Parameters<typeof manageLedgerItem>[3]){
@@ -28,16 +29,18 @@ export function LedgerItemActions({ledger,kind,itemKey,onSave,balance=0}:{
   finally{setBusy(false);}
  }
  return <div className={'ledger-item-actions'+(account?' account-settings-fields':'')}>
-  {(account||editing)&&<form onSubmit={event=>{event.preventDefault();void apply('rename')}}>
+  {(account||editing)&&<form id={formId} onSubmit={event=>{event.preventDefault();void apply('rename')}}>
    <label>{account?'Account name':'Category name'}<input autoFocus={account} required maxLength={60} value={name} onChange={event=>setName(event.target.value)}/></label>
    {account&&<label>Account type<select value={type} onChange={event=>setType(event.target.value as AccountType)}><AccountTypeOptions/></select></label>}
-   <button className="button primary" disabled={busy||unchanged}>{account?'Save changes':'Save name'}</button>
+   {!account&&<button className="button primary" disabled={busy}>Save name</button>}
    {!account&&<button className="button" type="button" disabled={busy} onClick={()=>{setEditing(false);setError('')}}>Cancel</button>}
   </form>}
   {(account||!editing)&&<div className="button-row">
    {!account&&<button className="button" disabled={busy} onClick={()=>{setName(label);setError('');setEditing(true)}}>Rename</button>}
    <button className="button" disabled={busy||(!archived&&!!balance)} title={balance?'Settle this account before archiving':undefined} onClick={()=>void apply(archived?'restore':'archive')}>{archived?'Restore':'Archive'}</button>
    {!itemHasHistory(ledger,kind,itemKey)&&<button className="button" disabled={busy} onClick={()=>{if(window.confirm('Delete '+label+'?'))void apply('delete')}}>Delete</button>}
+   {extraActions}
+   {account&&<button type="submit" form={formId} className="button primary account-editor-save" disabled={busy||unchanged}>Save changes</button>}
   </div>}
   {error&&<p className="form-error" role="alert">{error}</p>}
  </div>;

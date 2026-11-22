@@ -1,9 +1,9 @@
 import {accountNames} from './accounts';
-import {CATEGORY_TAGS,categoryNames,type CategoryTag} from './categories';
+import {CATEGORY_ICONS,categoryNames,type CategoryIcon} from './categories';
 import {totals,type Entry,type Ledger} from './ledger';
 
 export type ItemKind='account'|'category';
-export type ItemSettings=Record<string,{name?:string;tag?:CategoryTag;status?:'archived'|'deleted'}>;
+export type ItemSettings=Record<string,{name?:string;tag?:string|null;icon?:CategoryIcon;status?:'archived'|'deleted'}>;
 type Action='rename'|'archive'|'restore'|'delete';
 
 const settingsKey=(kind:ItemKind)=>kind==='account'?'accountSettings':'categorySettings';
@@ -77,7 +77,7 @@ export function validateLedgerItems(ledger:Ledger){
   for(const [key,item] of Object.entries(settings)){
    if(!itemKeys(ledger,kind).includes(key)||!item||typeof item!=='object'||Array.isArray(item)
      ||(item.status!==undefined&&!['archived','deleted'].includes(item.status)))throw Error('Invalid '+kind+' settings.');
-   if(item.tag!==undefined&&(kind!=='category'||!CATEGORY_TAGS.includes(item.tag)))throw Error('Invalid category tag.');
+   if(item.icon!==undefined&&(kind!=='category'||!CATEGORY_ICONS.includes(item.icon)))throw Error('Invalid category icon.');
    if(item.name!==undefined){
     if(typeof item.name!=='string')throw Error('Invalid '+kind+' name.');
     checkItemName(ledger,kind,item.name,key);

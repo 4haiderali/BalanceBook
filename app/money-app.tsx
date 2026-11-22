@@ -25,7 +25,7 @@ import {activeItems,itemName,itemStatus,preferredItem} from '../lib/ledger-items
 import {categoryType} from '../lib/categories';
 import {AccountTypeOptions,LedgerItemActions} from './ledger-item-actions';
 import {useEffect,useRef,useState} from 'react';
-import {LayoutDashboard,ArrowLeftRight,Wallet,Users,UtensilsCrossed,BarChart3,Plus,Search,X,Download,Check,AlertCircle,Pencil,Menu,CheckCircle2,Tag,Settings} from 'lucide-react';
+import {LayoutDashboard,ArrowLeftRight,Wallet,Banknote,Users,UtensilsCrossed,BarChart3,Plus,Search,X,Download,Check,AlertCircle,Pencil,Menu,CheckCircle2,Tag,Settings} from 'lucide-react';
 import {KINDS,reflow,totals,reconciliation,type Ledger,type Entry} from '../lib/ledger';
 import {normalize,personName,prepareEntry,previewChanges,deleteEntry,LEGACY_TYPES,type Change} from '../lib/v2';
 import {Details,PeoplePanel,Changes,RecordedTogether} from './v2-panels';
@@ -54,10 +54,22 @@ async function readLedgerResponse(response:Response,action:string){
 }
 type EntryDraft={id:string;form:ReturnType<typeof fresh>;context:string;monthOverridden:boolean};
 
+function accountInitials(label:string,key:string){
+ const known=/^(?:(?:bank )?alfalah|nayapay|(?:bop(?: savings)?|(?:the )?bank of punjab)|(?:meezan(?: bank)?)|jazz\s*cash)$/i;
+ const identity=[label,key].find(name=>known.test(name.trim()))?.toLowerCase().replace(/\s/g,'');
+ if(identity?.includes('alfalah'))return 'BA';
+ if(identity==='nayapay')return 'NP';
+ if(identity?.startsWith('bop')||identity?.endsWith('bankofpunjab'))return 'BOP';
+ if(identity?.startsWith('meezan'))return 'MB';
+ if(identity==='jazzcash')return 'JC';
+ const words=label.trim().split(/\s+/);
+ return (words.length===1?label.slice(0,3):words.slice(0,3).map(word=>word[0]).join('')).toUpperCase();
+}
+
 export default function MoneyApp(){
  const displayPreferences=useDisplayPreferences();
  const [transactionSort,setTransactionSort]=useState<TransactionSort|null>(null);
- const [ledger,setLedger]=useState<Ledger|null>(null),[revision,setRevision]=useState(0),[savedAt,setSavedAt]=useState<string|null>(null),[page,setPage]=useState('overview'),[month,setMonth]=useState(today().slice(0,7)),[year,setYear]=useState(today().slice(0,4)),[search,setSearch]=useState(''),[filter,setFilter]=useState('all'),[limit,setLimit]=useState(50),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState(''),[mobile,setMobile]=useState(false),[modal,setModal]=useState(false),[form,setForm]=useState(fresh()),[editId,setEditId]=useState<string|null>(null),[formError,setFormError]=useState(''),[history,setHistory]=useState<any[]>([]),[deleteId,setDeleteId]=useState<string|null>(null);
+ const [ledger,setLedger]=useState<Ledger|null>(null),[revision,setRevision]=useState(0),[savedAt,setSavedAt]=useState<string|null>(null),[page,setPage]=useState('overview'),[month,setMonth]=useState(today().slice(0,7)),[year,setYear]=useState(today().slice(0,4)),[search,setSearch]=useState(''),[filter,setFilter]=useState('all'),[limit,setLimit]=useState(50),[loading,setLoading]=useState(true),[saving,setSaving]=useState(false),[error,setError]=useState(''),[notice,setNoticeState]=useState<{text:string}|null>(null),[mobile,setMobile]=useState(false),[modal,setModal]=useState(false),[form,setForm]=useState(fresh()),[editId,setEditId]=useState<string|null>(null),[formError,setFormError]=useState(''),[history,setHistory]=useState<any[]>([]),[deleteId,setDeleteId]=useState<string|null>(null);
  useEffect(()=>{
   let previous=today().slice(0,7);
   function refreshMonth(){
@@ -82,6 +94,8 @@ export default function MoneyApp(){
  const [parkingLink,setParkingLink]=useState<{id?:string;month:string}|null>(null);
  const [existingRefund,setExistingRefund]=useState<{refundId:string;expenseId?:string}|null>(null);
  const [showArchivedAccounts,setShowArchivedAccounts]=useState(false);
+ const [expandedAccountActions,setExpandedAccountActions]=useState<string|null>(null);
+ useEffect(()=>{if(page!=='accounts')setExpandedAccountActions(null)},[page]);
  const [addingAccount,setAddingAccount]=useState(false),[accountEditor,setAccountEditor]=useState<string|null>(null);
  const [balanceAccount,setBalanceAccount]=useState(''),[transactionAccount,setTransactionAccount]=useState('');
  const accountEditorTrigger=useRef<HTMLButtonElement|null>(null);
@@ -222,6 +236,12 @@ export default function MoneyApp(){
  useEffect(()=>{load()},[]);
  useEffect(()=>{if(ledger&&!loading)desktopHost()?.postMessage('state:ready')},[ledger,loading]);
  useEffect(()=>{if(page==='backup')fetch('/api/ledger?history=1').then(r=>r.json()).then((j:any)=>setHistory(j.history||[])).catch(()=>setError('Could not load saved versions.'))},[page,revision]);
+ function setNotice(text:string){setNoticeState(text?{text}:null)}
+ useEffect(()=>{
+  if(!notice)return;
+  const timer=window.setTimeout(()=>setNoticeState(null),30_000);
+  return ()=>window.clearTimeout(timer);
+ },[notice]);
  const [undo,setUndo]=useState<TransactionUndo|null>(null);
  useEffect(()=>{
   if(!undo)return;
@@ -371,17 +391,17 @@ export default function MoneyApp(){
   <button className="button" disabled={saving} onClick={()=>void applyUndo()}>Undo</button>
   <button className="icon-button" onClick={()=>setUndo(null)} aria-label="Dismiss Undo"><X size={16}/></button>
  </div>}
- {notice&&<div role="status" className="banner success"><CheckCircle2 size={17}/><span>{notice}</span><button onClick={()=>setNotice('')} aria-label="Dismiss notification"><X size={16}/></button></div>}
+ {!undo&&notice&&<div className="undo-toast"><CheckCircle2 size={17} aria-hidden="true"/><span role="status">{notice.text}</span><button className="icon-button" onClick={()=>setNotice('')} aria-label="Dismiss notification"><X size={16}/></button></div>}
  {page==='overview'&&<OverviewPanel ledger={ledger} month={month} revision={revision}
   recentActivity={txnTable(sorted.slice(0,6),true)} navigate={navigate} useShortcut={useShortcut}
   onTransactions={()=>{setSearch('');setDateBasis('all');setFilter('all');setTransactionAccount('');navigate('transactions')}}/>}
- {page==='transactions'&&<section className="panel"><div className="panel-heading"><h2>Transaction ledger <span className="count">{filtered.length}</span></h2></div><div className="toolbar transaction-filters">{transactionAccount&&<button className="button" onClick={()=>setTransactionAccount('')}>Account: {itemName(ledger,'account',transactionAccount)} · Clear</button>}<div className="search"><Search size={17}/><input ref={searchField} aria-label="Search transactions" placeholder="Search description, amount, date or account…" value={search} onChange={e=>{setSearch(e.target.value);setLimit(50)}}/></div><select aria-label="Transaction date scope" value={dateBasis} onChange={e=>{setDateBasis(e.target.value);setDateFrom('');setDateTo('');setLimit(50)}}><option value="all">All dates</option><option value="actual">Actual date</option><option value="report">Report month</option></select><select aria-label="Transaction source" value={filter} onChange={e=>{setFilter(e.target.value);setLimit(50)}}><option value="all">All entries</option><option value="new">App entries</option><option value="legacy">Excel history</option><option value="deleted">Deleted entries</option></select>{dateBasis!=='all'&&<div className="date-range"><label>From<input type={dateBasis==='actual'?'date':'month'} value={dateFrom} onChange={e=>setDateFrom(e.target.value)}/></label><label>Through<input type={dateBasis==='actual'?'date':'month'} value={dateTo} onChange={e=>setDateTo(e.target.value)}/></label></div>}{transactionSort&&<button type="button" className="button" onClick={()=>{setTransactionSort(null);setLimit(50)}}>Restore original order</button>}</div>{txnTable(orderTransactions(filtered,ledger,transactionSort).slice(0,limit))}{!filtered.length&&(search||dateBasis!=='all'||filter!=='all'||transactionAccount)&&<div className="center"><button className="button" onClick={()=>{setSearch('');setDateBasis('all');setFilter('all');setTransactionAccount('');setLimit(50)}}>Clear filters</button></div>}{filtered.length>limit&&<div className="center"><button className="button" onClick={()=>setLimit(limit+100)}>Show more transactions</button></div>}</section>}
+ {page==='transactions'&&<section className="panel"><div className="panel-heading"><h2>Transaction ledger <span className="count">{filtered.length}</span></h2></div><div className="toolbar transaction-filters">{transactionAccount&&<button className="button" onClick={()=>setTransactionAccount('')}>Account: {itemName(ledger,'account',transactionAccount)} · Clear</button>}<div className="search"><Search size={17}/><input ref={searchField} aria-label="Search transactions" placeholder="Search description, amount, date or account…" value={search} onChange={e=>{setSearch(e.target.value);setLimit(50)}}/></div><select aria-label="Transaction date scope" value={dateBasis} onChange={e=>{setDateBasis(e.target.value);setDateFrom('');setDateTo('');setLimit(50)}}><option value="all">All dates</option><option value="actual">Actual date</option><option value="report">Report month</option></select><select aria-label="Transaction source" value={filter} onChange={e=>{setFilter(e.target.value);setLimit(50)}}><option value="all">All entries</option><option value="new">App entries</option><option value="legacy">Excel history</option><option value="deleted">Deleted entries</option></select>{dateBasis!=='all'&&<div className="date-range"><label>From<input type={dateBasis==='actual'?'date':'month'} value={dateFrom} onChange={e=>setDateFrom(e.target.value)}/></label><label>Through<input type={dateBasis==='actual'?'date':'month'} value={dateTo} onChange={e=>setDateTo(e.target.value)}/></label></div>}{transactionSort&&<button type="button" className="button transaction-sort-reset" onClick={()=>{setTransactionSort(null);setLimit(50)}}>Restore original order</button>}</div>{txnTable(orderTransactions(filtered,ledger,transactionSort).slice(0,limit))}{!filtered.length&&(search||dateBasis!=='all'||filter!=='all'||transactionAccount)&&<div className="center"><button className="button" onClick={()=>{setSearch('');setDateBasis('all');setFilter('all');setTransactionAccount('');setLimit(50)}}>Clear filters</button></div>}{filtered.length>limit&&<div className="center"><button className="button" onClick={()=>setLimit(limit+100)}>Show more transactions</button></div>}</section>}
  {page==='accounts'&&<>
   <p className="section-context">Balances across all recorded dates, including future entries.</p>
   <section className="panel account-ledger">
    <div className="panel-heading account-toolbar">
     <button className="button primary" aria-expanded={addingAccount} onClick={()=>setAddingAccount(!addingAccount)}><Plus size={16}/>{addingAccount?'Cancel add account':'Add account'}</button>
-    <button className="button" onClick={()=>setShowArchivedAccounts(!showArchivedAccounts)}>{showArchivedAccounts?'Show active accounts':'Show archived accounts'}</button>
+    <button className="button" onClick={()=>{setExpandedAccountActions(null);setShowArchivedAccounts(!showArchivedAccounts)}}>{showArchivedAccounts?'Show active accounts':'Show archived accounts'}</button>
    </div>
    {addingAccount&&<form className="account-add" onSubmit={async e=>{
     e.preventDefault();
@@ -395,19 +415,23 @@ export default function MoneyApp(){
     <label>Account type<select value={newAccountType} onChange={e=>setNewAccountType(e.target.value as AccountType)}><AccountTypeOptions/></select></label>
     <button className="button primary" type="submit" disabled={saving}>Save account</button>
    </form>}
-   <div className="table-scroll"><table><thead><tr><th>Account</th><th>Type</th><th className="right">Balance{currencyAffix(' (',')')}</th><th>Actions</th></tr></thead><tbody>
+   <div className="table-scroll"><table className="accounts-table"><thead><tr><th>Account</th><th className="right">Balance{currencyAffix(' (',')')}</th><th>Actions</th></tr></thead><tbody>
    {accountNames(ledger).filter(a=>itemStatus(ledger,'account',a)===(showArchivedAccounts?'archived':'active')).map(a=>{
     const label=itemName(ledger,'account',a),type=accountType(ledger,a);
     const destinations=activeItems(ledger,'account').filter(key=>key!==a);
-    return <tr key={a}><td><strong>{label}</strong></td><td>{type[0].toUpperCase()+type.slice(1)}</td><td className="right"><strong>{money(position.accounts[a]||0)}</strong>{position.accounts[a]<0&&<small>Payments exceed the opening balance and receipts.</small>}</td>
+
+    return <tr key={a}><td><div className="account-identity"><span className="mini-icon">{a==='Cash'?<Banknote size={17} aria-hidden="true"/>:accountInitials(label,a)}</span><div><strong>{label}</strong><small>{type[0].toUpperCase()+type.slice(1)}</small></div></div></td><td className="right account-balance"><strong>{money(position.accounts[a]||0)}</strong>{position.accounts[a]<0&&<small>Payments exceed the opening balance and receipts.</small>}</td>
      <td><div className="button-row account-actions">
-      {!showArchivedAccounts&&destinations.length>0&&<button className="button" onClick={()=>{openEntry('transfer');setForm({...newForm(),kind:'transfer',category:'',account:a,to:destinations.includes('BOP Savings')?'BOP Savings':destinations[0]})}}>Transfer</button>}
-      {!showArchivedAccounts&&a!=='Cash'&&itemStatus(ledger,'account','Cash')==='active'&&<>
+      {!showArchivedAccounts&&destinations.length>0&&<button className="button account-transfer" onClick={()=>{openEntry('transfer');setForm({...newForm(),kind:'transfer',category:'',account:a,to:destinations.includes('BOP Savings')?'BOP Savings':destinations[0]})}}>Transfer</button>}
+      {!showArchivedAccounts&&<button type="button" className="button account-more-toggle" aria-expanded={expandedAccountActions===a} aria-label={(expandedAccountActions===a?'Fewer actions for ':'More actions for ')+label} onClick={()=>setExpandedAccountActions(current=>current===a?null:a)}>{expandedAccountActions===a?'Less':'More'}</button>}
+      <button className="button account-pencil" aria-label={'Edit '+label} title={'Edit '+label} onClick={e=>{accountEditorTrigger.current=e.currentTarget;setAccountEditor(a)}}><Pencil size={16} aria-hidden="true"/></button>
+      {!showArchivedAccounts&&expandedAccountActions===a&&<>
+      {a!=='Cash'&&itemStatus(ledger,'account','Cash')==='active'&&<>
        <button className="button" onClick={()=>{openEntry('transfer');setEntryContext('Withdraw cash');setForm({...newForm(),kind:'transfer',description:'Cash withdrawal from '+label,account:a,to:'Cash',category:''})}}>Withdraw cash</button>
        <button className="button" onClick={()=>{openEntry('transfer');setEntryContext('Deposit cash');setForm({...newForm(),kind:'transfer',description:'Cash deposit into '+label,account:'Cash',to:a,category:''})}}>Deposit cash</button>
       </>}
-      {!showArchivedAccounts&&<button className="button" onClick={e=>{accountEditorTrigger.current=e.currentTarget;setError('');setBalanceAccount(a)}}>Confirm balance</button>}
-      <button className="button account-pencil" aria-label={'Edit '+label} title={'Edit '+label} onClick={e=>{accountEditorTrigger.current=e.currentTarget;setAccountEditor(a)}}><Pencil size={16} aria-hidden="true"/></button>
+      <button className="button" onClick={e=>{accountEditorTrigger.current=e.currentTarget;setError('');setBalanceAccount(a)}}>Confirm balance</button>
+      </>}
      </div></td>
     </tr>;
    })}

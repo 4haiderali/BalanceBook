@@ -175,10 +175,10 @@ strong,b{font-weight:600}
 .sidebar{width:240px;position:fixed;inset:0 auto 0 0;background:var(--nav-bg);border-right:1px solid var(--border);padding:34px 20px 20px;display:flex;flex-direction:column;z-index:30}
 .brand{display:flex;gap:12px;align-items:center;padding:0 12px;font-size:26px;letter-spacing:-1px;font-weight:600}
 .status-dot{width:6px;height:6px;background:var(--ok);border-radius:100%;display:inline-block}
-nav{display:flex;flex-direction:column;gap:5px}
-nav button{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:13px 13px;color:var(--nav-text);border-radius:7px;font-size:12px}
-nav button.active{color:var(--nav-text);background:var(--nav-hover);font-weight:600}
-nav button:hover{background:var(--nav-hover)}
+.sidebar nav{display:flex;flex-direction:column;gap:5px}
+.sidebar nav button{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:13px 13px;color:var(--nav-text);border-radius:7px;font-size:12px}
+.sidebar nav button.active{color:var(--nav-text);background:var(--nav-hover);font-weight:600}
+.sidebar nav button:hover{background:var(--nav-hover)}
 main{margin-left:240px;width:calc(100% - 240px)}
 .icon-button{color:var(--muted);padding:4px}
 .mobile-menu{display:none}
@@ -419,14 +419,17 @@ input::placeholder,textarea::placeholder{color:var(--subtle)}
 }
 /* v0.3: guided category entry, reusing the current visual palette. */
 .category-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:0 22px 22px}
-.category-card{border:1px solid var(--border);border-radius:8px;padding:20px;text-align:left;min-width:0}
+.category-card{border:1px solid var(--border);border-radius:8px;padding:14px;text-align:left;min-width:0}
 .category-card:hover{background:var(--accent-soft);border-color:var(--accent-border)}
-.category-card-heading{display:flex;align-items:center;justify-content:space-between;color:var(--muted);margin-bottom:20px}
-.category-card h2{font-size:14px;margin-bottom:12px}
-.category-card>strong{display:block;font-size:23px;letter-spacing:-.5px;font-weight:500}
-.category-card>small{color:var(--muted);font-size:12px;margin-top:7px}
-.category-card-foot{display:flex;justify-content:space-between;gap:10px;margin-top:22px;padding-top:13px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
+.category-card-heading{display:flex;align-items:center;gap:9px;color:var(--muted);margin-bottom:8px}
+.category-card-heading .mini-icon{height:30px;width:30px}
+.category-card-heading>svg{flex-shrink:0}
+.category-card h2{flex:1;min-width:0;font-size:14px;margin:0;color:var(--text);overflow-wrap:anywhere}
+.category-card>strong{display:block;font-size:21px;letter-spacing:-.5px;font-weight:500}
+.category-card>small{color:var(--muted);font-size:12px;margin-top:3px}
+.category-card-foot{display:flex;justify-content:space-between;gap:8px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--muted)}
 .category-card-foot>span+span{color:var(--text-2)}
+@media(min-width:1360px){.category-cards{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .category-details{width:670px}
 .category-summary{display:flex;gap:30px;flex-wrap:wrap;border:1px solid var(--border);background:var(--surface-2);padding:19px;border-radius:8px;margin-bottom:22px}
 .category-summary small{font-size:12px;color:var(--muted)}
@@ -451,9 +454,8 @@ input::placeholder,textarea::placeholder{color:var(--subtle)}
 @media(max-width:700px){
  .category-cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0 16px 16px}
  .category-card{padding:14px 11px}
- .category-card-heading{margin-bottom:17px}
  .category-card>strong{font-size:19px}
- .category-card-foot{flex-direction:column;gap:7px;margin-top:16px}
+ .category-card-foot{flex-direction:column;gap:3px}
  .category-details{width:100%}
  .category-summary{gap:20px;padding:16px}
  .category-summary strong{font-size:18px}
@@ -522,7 +524,7 @@ input::placeholder,textarea::placeholder{color:var(--subtle)}
  .group-stats>.stat-card:last-child .text-button{margin-top:2px}
 }
 .review-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
-.review-tabs button{padding:11px 15px;border:1px solid var(--border);border-radius:7px;background:var(--surface)}
+.review-tabs button{color:var(--text);padding:11px 15px;border:1px solid var(--border);border-radius:7px;background:var(--surface)}
 .review-tabs button.active{background:var(--accent-soft);border-color:var(--accent-border);color:var(--accent-text)}
 .review-panel .panel{margin-bottom:20px}
 .review-panel label{display:flex;flex-direction:column;gap:8px;font-size:12px;color:var(--muted);margin:15px 0}
@@ -688,6 +690,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .dashboard-balances strong{white-space:nowrap}
 .transaction-filters{flex-wrap:wrap;align-items:center}
 .transaction-filters .search{flex:1 1 245px}
+.transaction-filters .search,.transaction-filters select,.transaction-filters .date-range input{min-height:44px}
+.transaction-filters .transaction-sort-reset{min-height:44px;font-size:14px;border-color:var(--field-border)}
 .date-range{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .date-range label{display:flex;align-items:center;gap:5px}
 .table-scroll:has(.transactions){max-height:68vh;overflow:auto;scrollbar-width:thin}
@@ -847,8 +851,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .account-ledger td,.people-ledger td{color:var(--text);padding-block:8px}
 .account-ledger td.right strong{font-weight:700}
 .account-actions,.person-actions,.person-admin{flex-wrap:wrap;gap:6px;margin:0}
+.account-actions{align-items:center;flex-wrap:nowrap}
 .account-actions .button,.person-management .button{min-height:32px;padding:5px 9px}
-.account-actions .button:first-child{color:var(--accent-text);background:var(--accent-soft);border-color:var(--accent-border)}
+.account-actions .account-transfer{color:var(--accent-text);background:var(--accent-soft);border-color:var(--accent-border)}
 .account-ledger select{color:var(--text);border-color:var(--field-border);padding:5px 8px}
 .person-management{display:grid;gap:8px;padding:0 0 6px}
 .person-management .person-actions:empty{display:none}
@@ -898,18 +903,38 @@ html:has(.modal-overlay){overflow:hidden}
 .loading .balancebook-mark{width:56px;height:56px;margin-inline:auto}
 .ledger-item-actions{margin-top:6px}
 .ledger-item-actions :is(form,.button-row){display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0}
-.ledger-item-actions input{width:min(210px,100%);min-height:32px}
+.ledger-item-actions input{width:min(210px,100%);min-height:36px}
+.ledger-item-actions:not(.account-settings-fields) form{align-items:end}
+.ledger-item-actions:not(.account-settings-fields) form label{display:grid;gap:5px;margin:0}
+.ledger-item-actions:not(.account-settings-fields) form :is(input,.button){min-height:38px;margin:0}
+.category-details .ledger-item-actions{margin-bottom:10px}
 .ledger-item-actions .button{min-height:32px;padding:5px 9px}
 .ledger-item-actions .form-error{margin:5px 0 0}
 .account-toolbar{display:flex;justify-content:flex-start;gap:8px;flex-wrap:wrap}
 .account-add{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;padding:0 16px 16px}
 .account-add label{display:grid;gap:4px}
 .account-add input{min-height:34px;padding:5px 8px;border:1px solid var(--field-border);border-radius:6px}
-.account-actions .account-pencil{margin-inline-start:auto;min-width:32px}
-.account-settings-fields form{display:grid;margin-bottom:16px}
-.account-settings-fields form label{width:100%;margin:0}
-.account-settings-fields form input{width:100%}
-.account-settings-fields form .button{justify-self:start}
+.account-actions .account-pencil{min-width:32px}
+.account-actions .account-more-toggle{min-width:54px}
+.accounts-table{min-width:880px;table-layout:fixed}
+.accounts-table th:first-child{width:clamp(180px,22%,280px)}
+.accounts-table th:nth-child(2){width:132px}
+.accounts-table td{vertical-align:top}
+.accounts-table .account-balance strong{font-variant-numeric:tabular-nums}
+.accounts-table .account-balance small{display:block;color:var(--muted)}
+.account-identity{display:flex;align-items:center;gap:9px;overflow-wrap:anywhere}
+.account-identity small{display:block;color:var(--muted)}
+.account-identity .mini-icon{font-size:11px;font-weight:700;letter-spacing:.02em;color:var(--accent-text)}
+@media(max-width:600px){
+ .accounts-table td,.accounts-table th{padding-inline:8px}
+}
+.category-icon-editor{margin-bottom:8px}
+.account-settings-fields form{display:grid;gap:12px;margin:0}
+.account-settings-fields form label{display:grid;gap:5px;width:100%;margin:0}
+.account-settings-fields form :is(input,select){width:100%;min-height:40px;margin:0}
+.account-settings-fields .button-row{gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+.account-settings-fields .button-row .button{min-height:38px;padding-inline:12px}
+.account-editor-save{margin-inline-start:auto}
 .balancebook-credit{margin-top:auto;padding:18px 10px 8px;color:var(--nav-text);font-size:12px}
 .undo-toast{position:fixed;inset:auto 20px 20px auto;z-index:40;display:flex;align-items:center;gap:10px;max-width:calc(100vw - 40px);padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);box-shadow:0 4px 20px rgb(10 20 45 / .19);color:var(--text)}
 .undo-toast [role=status]{overflow-wrap:anywhere}
@@ -944,5 +969,20 @@ html:has(.modal-overlay){overflow:hidden}
 .theme-preview.left{clip-path:polygon(0 0,50% 0,50% 100%,0 100%)}
 .theme-preview.right{clip-path:polygon(50% 0,100% 0,100% 100%,50% 100%)}
 .settings-status{font-size:13px;color:var(--muted)}
-.settings-actions{display:flex;flex-wrap:wrap;gap:10px}
+.settings-formats .form-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.settings-formats .form-grid label{display:grid;align-content:start;gap:6px}
+.settings-formats select{width:100%;min-width:0}
+.settings-formats small{color:var(--muted)}
+.settings-formats .button{justify-self:start}
+@media(max-width:560px){
+ .settings-formats .form-grid{grid-template-columns:1fr}
+}
 @media(max-width:700px){.theme-options{grid-template-columns:1fr}.theme-swatch{height:56px}}
+
+.category-icon-picker{min-width:0;flex:1 0 100%;border:0;padding:0;margin:0}
+.category-icon-picker legend{margin-bottom:8px}
+.category-icon-options{display:flex;flex-wrap:wrap;gap:6px}
+.category-icon-options .category-icon-option{position:relative;display:grid;place-items:center;width:40px;height:40px;border:1px solid var(--border);border-radius:7px;color:var(--muted);background:var(--surface);cursor:pointer}
+.category-icon-option:hover,.category-icon-option:has(:checked){border-color:var(--accent-border);background:var(--accent-soft);color:var(--accent-text)}
+.category-icon-option:has(:focus-visible){outline:2px solid var(--accent-text);outline-offset:2px}
+.category-icon-picker:disabled .category-icon-option{cursor:default}
