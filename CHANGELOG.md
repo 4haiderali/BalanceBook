@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.3.0
 
 - Move Backup & recovery and Help & guide into Settings.
 - Add display preferences for date style, currency label, digit grouping and decimal places.

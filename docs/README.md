@@ -1,5 +1,7 @@
 # Documentation
 
+This branch builds BalanceBook 1.3.0.
+
 - [How to use BalanceBook](USER-GUIDE.md)
 - [Build and release](BUILDING.md)
 - [Installation/removal](INSTALLATION.md)

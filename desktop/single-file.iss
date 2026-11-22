@@ -7,12 +7,12 @@
 [Setup]
 AppId=BalanceBookDesktop
 AppName=BalanceBook
-AppVersion=1.2.29
-AppVerName=BalanceBook 1.2.29
+AppVersion=1.3.0
+AppVerName=BalanceBook 1.3.0
 AppPublisher=Haider Ali
-VersionInfoVersion=1.2.29.0
+VersionInfoVersion=1.3.0.0
 OutputDir={#OutputRoot}
-OutputBaseFilename=BalanceBook-1.2.29-Setup-x64
+OutputBaseFilename=BalanceBook-1.3.0-Setup-x64
 SetupIconFile={#ReleaseRoot}\payload\HaiderMoney.ico
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
