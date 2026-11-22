@@ -15,6 +15,7 @@ Open **Help & guide** in the app sidebar. Included in Windows builds starting wi
 - [Reports and reconciliation](#reports)
 - [Back up and verify](#backup)
 - [Recover from JSON](#restore)
+- [Settings and dark mode](#settings)
 - [Updates and support](#support)
 
 <a id="start"></a>
@@ -124,6 +125,14 @@ Review verification, counts and balances before confirming. Recovery replaces th
 JSON retains the snapshot and transaction audit, not the entire SQLite saved-version history. After recovery, compare accounts, people, corrections, deleted entries and linked receipts.
 
 If startup fails, use recovery in the startup dialog. Preserve existing data before troubleshooting. Desktop data is normally under %LOCALAPPDATA%\HaiderMoney\Data; exported backups are in your chosen folder.
+
+<a id="settings"></a>
+
+## Settings and dark mode
+
+Open Settings in the sidebar to choose Match system, Light or Dark. Match system follows your Windows light or dark setting and changes with it while BalanceBook is open.
+
+Your choice is remembered on this computer and applies the next time you open the app. It is a display preference only: it is not part of your ledger, is not backed up and does not create a ledger revision or audit entry.
 
 <a id="support"></a>
 

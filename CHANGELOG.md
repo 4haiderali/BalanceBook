@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Add a Settings page with Match system, Light and Dark themes. The choice is stored in a cookie (and localStorage) so it survives the desktop app's changing local port, and `public/theme-init.js` applies it before first paint.
+- Replace the stylesheet's hard-coded colours with design tokens, remove the leftover green palette and 153 unused rules, and raise text below 12px to a readable size.
+- Show currency as PKR and dates as 21 Nov 2026 consistently across the app.
+- Put "To account" beside "From account" in the transfer form.
+
 ## 1.2.29
 
 - Prevent transfers from retaining a hidden expense category such as Food, including stale drafts and shortcuts at the save boundary.

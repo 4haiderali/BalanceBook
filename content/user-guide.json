@@ -97,6 +97,14 @@
       ]
     },
     {
+      "id": "settings",
+      "title": "Settings and dark mode",
+      "paragraphs": [
+        "Open Settings in the sidebar to choose Match system, Light or Dark. Match system follows your Windows light or dark setting and changes with it while BalanceBook is open.",
+        "Your choice is remembered on this computer and applies the next time you open the app. It is a display preference only: it is not part of your ledger, is not backed up and does not create a ledger revision or audit entry."
+      ]
+    },
+    {
       "id": "support",
       "title": "Updates and support",
       "paragraphs": [

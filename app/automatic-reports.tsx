@@ -1,3 +1,4 @@
+import {formatDateTime} from '../lib/display-format';
 import {useEffect,useState} from 'react';
 import {desktopHost} from './desktop-host';
 
@@ -45,7 +46,7 @@ export function AutomaticReports({savedAt,revision,manual}:{savedAt:string|null;
 
  const automatic=status?.backup;
  const latest=automatic&&(!manual||Date.parse(automatic.at)>=Date.parse(manual.at))?automatic:manual;
- const displayTime=(value:string)=>new Date(value).toLocaleString('en-GB',{timeZone:'Asia/Karachi'});
+ const displayTime=(value:string)=>formatDateTime(value);
  return <section className="panel prose automatic-reports">
   <h2>Backup health</h2>
   <dl className="detail-fields">
@@ -62,7 +63,7 @@ export function AutomaticReports({savedAt,revision,manual}:{savedAt:string|null;
    <button className="button" disabled={requesting||status.running} onClick={()=>void queue(true)}>Rebuild all reports</button></>}
   </div>
   {status?.running&&<p role="status">Updating reports and backups…</p>}
-  {status?.at&&<p>Last complete local export {new Date(status.at).toLocaleString('en-GB')}.</p>}
+  {status?.at&&<p>Last complete local export {formatDateTime(status.at)}.</p>}
   {notice&&<p role="status">{notice}</p>}
   {!!status?.errors.length&&<div className="form-error" role="alert"><strong>Some exports could not finish. The app will retry while it is open.</strong><ul>{status.errors.slice(0,6).map(error=><li key={error}>{error}</li>)}</ul>{status.errors.length>6&&<p>{status.errors.length-6} more files need attention.</p>}</div>}
   {status?.folder&&<p>Files are saved locally. If this is a OneDrive folder, check OneDrive for cloud upload status.</p>}

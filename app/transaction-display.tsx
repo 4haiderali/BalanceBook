@@ -1,10 +1,9 @@
-import {formatMoney} from '../lib/display-format';
+import {formatMoney,formatDate} from '../lib/display-format';
 import {ArrowDownLeft, ArrowLeftRight, ArrowUpRight, Minus} from 'lucide-react';
 import {KINDS, type Entry, type Ledger} from '../lib/ledger';
 import {itemName} from '../lib/ledger-items';
 import {personName} from '../lib/v2';
 
-const date = new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric',timeZone:'UTC'});
 
 function appearance(entry:Entry){
  const {effects}=entry;
@@ -25,7 +24,6 @@ export function TransactionCells({entry,ledger,onOpen,displayAmount=entry.amount
  const destinationLabel=destination?' · to '+itemName(ledger,'account',destination):'';
  const person=personName(ledger,entry.person);
  const category=transfer?'—':itemName(ledger,'category',entry.category)||'—';
- const actualDate=new Date(entry.date+'T00:00:00Z');
  return <>
   <td><button className="transaction-name transaction-open" onClick={onOpen} aria-label={'Open transaction: '+entry.description+destinationLabel}>
    <span className={'tx-icon '+tone}><Icon size={15} aria-hidden="true"/></span>
@@ -36,7 +34,7 @@ export function TransactionCells({entry,ledger,onOpen,displayAmount=entry.amount
   </button></td>
   <td className="transaction-category">{category}</td>
   <td>{itemName(ledger,'account',entry.account)||'No bank movement'}</td>
-  <td className="nowrap">{Number.isNaN(actualDate.getTime())?entry.date:date.format(actualDate)}</td>
+  <td className="nowrap">{formatDate(entry.date)}</td>
   <td className={'right amount '+(tone==='green'?'positive':'')}>{formatMoney(displayAmount)}</td>
  </>;
 }
