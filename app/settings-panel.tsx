@@ -1,5 +1,7 @@
 'use client';
 import {setThemePreference,type ThemePreference} from '../lib/theme';
+import {DEFAULT_DISPLAY,DISPLAY_OPTIONS,formatCurrency,formatDate,formatDateTime,type DisplayPreferences} from '../lib/display-format';
+import {saveDisplayPreferences} from './display-preferences';
 import {useThemePreference} from './theme-sync';
 
 const OPTIONS:{id:ThemePreference;label:string;hint:string}[]=[
@@ -32,4 +34,25 @@ export function SettingsPanel(){
    <p className="settings-status" role="status">Showing the {resolved} theme{preference==='system'?' because your system is set to '+resolved+'.':'.'}</p>
   </section>
  </div>;
+}
+
+const FORMAT_GROUPS=[
+ {key:'dateStyle',label:'Date style',labels:['21 Nov 2026','21/11/2026','2026-11-21']},
+ {key:'currency',label:'Currency label',labels:[DEFAULT_DISPLAY.currency,'Rs','None']},
+ {key:'grouping',label:'Digit grouping',labels:['International (1,234,567)','South Asian (12,34,567)']},
+ {key:'decimals',label:'Decimal places',labels:['Only when needed','Always show two']},
+] as const;
+
+export function FormatsPanel({preferences}:{preferences:DisplayPreferences}){
+ return <section className="panel settings-section prose" aria-labelledby="settings-formats">
+  <h2 id="settings-formats">Formats</h2>
+  <div className="form-grid">{FORMAT_GROUPS.map(({key,label,labels})=><label key={key}>{label}
+   <select value={preferences[key]} onChange={event=>saveDisplayPreferences({...preferences,[key]:event.target.value})}>
+    {DISPLAY_OPTIONS[key].map((value,index)=><option value={value} key={value}>{labels[index]}</option>)}
+   </select>
+   {key==='dateStyle'&&<small>Date pickers follow Windows regional settings.</small>}
+  </label>)}</div>
+  <p role="status">Preview: {formatCurrency(123456750)} {'\u00b7'} {formatDate('2026-11-21')} {'\u00b7'} {formatDateTime('2026-11-21T18:06:00Z')}</p>
+  <button type="button" className="button" onClick={()=>saveDisplayPreferences(DEFAULT_DISPLAY)}>Reset to defaults</button>
+ </section>;
 }

@@ -1,5 +1,5 @@
-import {formatMoney,formatDate} from '../lib/display-format';
-import {ArrowDownLeft, ArrowLeftRight, ArrowUpRight, Minus} from 'lucide-react';
+import {formatMoney,formatDate,currencyAffix} from '../lib/display-format';
+import {ArrowDownLeft, ArrowLeftRight, ArrowUpRight, ArrowDown, ArrowUp, ArrowUpDown, Minus} from 'lucide-react';
 import {KINDS, type Entry, type Ledger} from '../lib/ledger';
 import {itemName} from '../lib/ledger-items';
 import {personName} from '../lib/v2';
@@ -39,6 +39,38 @@ export function TransactionCells({entry,ledger,onOpen,displayAmount=entry.amount
  </>;
 }
 
-export function TransactionHeadings({actions=false}:{actions?:boolean}){
- return <thead><tr><th scope="col">Transaction</th><th scope="col">Category</th><th scope="col">Account</th><th scope="col">Actual date</th><th scope="col" className="right">Amount (PKR)</th>{actions&&<th scope="col">Actions</th>}</tr></thead>;
+const transactionColumns=[
+ ['description','Transaction'],['category','Category'],['account','Account'],
+ ['date','Actual date'],['amount','Amount'],
+] as const;
+export type TransactionColumn=typeof transactionColumns[number][0];
+export type TransactionSort={column:TransactionColumn;direction:'ascending'|'descending'};
+
+export function orderTransactions(entries:Entry[],ledger:Ledger,sort:TransactionSort|null){
+ if(!sort)return entries;
+ const {column,direction}=sort;
+ const value=(entry:Entry)=>{
+  if(column==='category')return appearance(entry).transfer?'\u2014':itemName(ledger,'category',entry.category)||'\u2014';
+  if(column==='account')return itemName(ledger,'account',entry.account)||'No bank movement';
+  return entry[column];
+ };
+ const collator=new Intl.Collator(undefined,{sensitivity:'base',numeric:true});
+ return [...entries].sort((left,right)=>{
+  const a=value(left),b=value(right);
+  const comparison=typeof a==='number'&&typeof b==='number'?a-b:collator.compare(String(a),String(b));
+  return direction==='ascending'?comparison:-comparison;
+ });
+}
+
+export function TransactionHeadings({actions=false,sort,onSort}:{
+ actions?:boolean;sort?:TransactionSort|null;onSort?:(column:TransactionColumn)=>void;
+}){
+ return <thead><tr>{transactionColumns.map(([column,label])=>{
+  const title=label+(column==='amount'?currencyAffix(' (',')'):'');
+  const direction=sort?.column===column?sort.direction:undefined;
+  const Icon=direction==='ascending'?ArrowUp:direction==='descending'?ArrowDown:ArrowUpDown;
+  return <th key={column} scope="col" aria-sort={direction} className={column==='amount'?'right':undefined}>
+   {onSort?<button type="button" className="transaction-sort" onClick={()=>onSort(column)}>{title}<Icon size={13} aria-hidden="true"/></button>:title}
+  </th>;
+ })}{actions&&<th scope="col">Actions</th>}</tr></thead>;
 }

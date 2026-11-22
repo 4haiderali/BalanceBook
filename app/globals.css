@@ -369,6 +369,8 @@ input::placeholder,textarea::placeholder{color:var(--subtle)}
 }
 /* v0.2: details, correction previews and people management */
 .transaction-open{text-align:left;padding:0;width:100%;border-radius:5px}
+.transaction-sort{display:inline-flex;align-items:center;gap:5px;padding:0;color:inherit;font:inherit;text-align:inherit}
+.transaction-sort:hover{text-decoration:underline}
 .transaction-open:hover strong{color:var(--accent-text);text-decoration:underline}
 .details-modal{width:650px}
 .details-modal h3{font-size:16px;font-weight:500;margin:8px 0 20px;line-height:1.6}

@@ -1,4 +1,4 @@
-import {formatExactMoney} from '../lib/display-format';
+import {currencyAffix,formatExactCurrency} from '../lib/display-format';
 import {useState} from 'react';
 import {X} from 'lucide-react';
 import {totals,type Ledger} from '../lib/ledger';
@@ -6,7 +6,7 @@ import {itemName} from '../lib/ledger-items';
 import {parseAmount} from '../lib/money-input';
 import {addCheckpoint,validDate} from '../lib/review';
 
-const money=(cents:number)=>'PKR '+formatExactMoney(cents);
+const money=(cents:number)=>formatExactCurrency(cents);
 
 export function BalanceCheck({ledger,account,today,saving,saveError,onClose,onSave,onTransactions}:{
  ledger:Ledger;account:string;today:string;saving:boolean;saveError:string;
@@ -30,7 +30,7 @@ export function BalanceCheck({ledger,account,today,saving,saveError,onClose,onSa
    }catch(err){setError(err instanceof Error?err.message:'Could not save the checkpoint.');}
   }}>
    <label>Closing date<input required type="date" min={ledger.baselineDate} max={today} value={date} onChange={e=>setDate(e.target.value)}/></label>
-   <label>Statement closing balance · PKR<input autoFocus required inputMode="decimal" value={actual} onChange={e=>setActual(e.target.value)}/></label>
+   <label>Statement closing balance{currencyAffix(' · ')}<input autoFocus required inputMode="decimal" value={actual} onChange={e=>setActual(e.target.value)}/></label>
    {calculated!==null&&<p>BalanceBook closing balance <strong>{money(calculated)}</strong></p>}
    {difference!==null&&<div className={difference?'form-error':'info-box'} role="status">{difference?'Statement minus BalanceBook: '+(difference>0?'+':'')+money(difference):'Balances match.'}</div>}
    <p>Saving a checkpoint records the comparison without changing the balance.</p>

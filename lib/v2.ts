@@ -1,3 +1,4 @@
+import {currencyAffix,formatCurrency} from './display-format';
 import {isTransfer} from './transfer-categories';
 import {checkActiveEntryItems,validateLedgerItems} from './ledger-items';
 import {validateParking,validateParkingTransition,parkingSummary} from './parking';
@@ -46,7 +47,7 @@ export function managePerson(input:Ledger,key:string,action:'add'|'rename'|'arch
 }
 export function correctLegacy(raw:Entry,old:Entry,baselineDate:string,allowedAccounts=ACCOUNTS,currentAccount='Legacy Current'):Entry{
  const e={...raw,kind:'legacy',sourceRow:old.sourceRow,original:old.original||{...old}};
- if(!Number.isSafeInteger(e.amount)||e.amount<=0)throw Error('Enter a positive amount in PKR.');
+ if(!Number.isSafeInteger(e.amount)||e.amount<=0)throw Error('Enter a positive amount'+currencyAffix(' in ')+'.');
  if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(e.month)||!/^\d{4}-\d{2}-\d{2}$/.test(e.date)||!Number.isFinite(Date.parse(e.date))||new Date(e.date+'T00:00:00Z').toISOString().slice(0,10)!==e.date)throw Error('Choose valid dates.');
  if(!e.description.trim()||!LEGACY_TYPES.includes(e.legacyType||''))throw Error('Enter a description and valid Excel transaction type.');
  if(['Income','Expense','Refund'].includes(e.legacyType!)&&!e.category)throw Error('Choose a category.');
@@ -75,7 +76,7 @@ function replayEditedLedger(next:Ledger,old?:Entry,replacement?:Entry){
     &&error.entry.person===old.person
     &&error.entry.kind===(old.kind==='lend'?'repaymentIn':'repaymentOut');
    const minimum=sameLoan?replacement.amount+error.shortfall:undefined;
-   const detail=minimum!==undefined?`Keep the amount at least PKR ${(minimum/100).toLocaleString('en-PK',{maximumFractionDigits:2})} to cover that repayment, or correct the repayment first.`:'Correct the repayment first, or keep enough outstanding balance on its date.';
+   const detail=minimum!==undefined?`Keep the amount at least ${formatCurrency(minimum)} to cover that repayment, or correct the repayment first.`:'Correct the repayment first, or keep enough outstanding balance on its date.';
    throw Error(`Can’t ${action} “${old.description}” because repayment ${blocker} would exceed the outstanding balance. ${detail}`);
   }
   throw Error(`Can’t ${action} “${old.description}”. Check ${blocker} first. ${error.message.slice(error.message.indexOf(': ')+2)}`);

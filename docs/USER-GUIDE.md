@@ -15,7 +15,7 @@ Open **Settings > Help & guide** in the app. Included in Windows builds starting
 - [Reports and reconciliation](#reports)
 - [Back up and verify](#backup)
 - [Recover from JSON](#restore)
-- [Settings and dark mode](#settings)
+- [Settings, formats and dark mode](#settings)
 - [Updates and support](#support)
 
 <a id="start"></a>
@@ -128,11 +128,13 @@ If startup fails, use recovery in the startup dialog. Preserve existing data bef
 
 <a id="settings"></a>
 
-## Settings and dark mode
+## Settings, formats and dark mode
 
-Open Settings in the sidebar to choose Match system, Light or Dark. Match system follows your Windows light or dark setting and changes with it while BalanceBook is open.
+Open Settings > Appearance to choose Match system, Light or Dark. Match system follows your Windows light or dark setting and changes with it while BalanceBook is open.
 
-Your choice is remembered on this computer and applies the next time you open the app. It is a display preference only: it is not part of your ledger, is not backed up and does not create a ledger revision or audit entry.
+In Settings > Formats, choose the date style, currency label, digit grouping and decimal places. Use the preview to check changes or reset to the defaults. Windows controls the native date pickers.
+
+Appearance and format choices are remembered on this computer. They do not change your ledger, backups, reports or exports.
 
 <a id="support"></a>
 

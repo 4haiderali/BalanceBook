@@ -1,3 +1,4 @@
+import {formatCurrency} from './display-format';
 import {totals,type Ledger} from './ledger';
 import {itemName} from './ledger-items';
 
@@ -30,7 +31,7 @@ export function entryWarnings(before:Ledger,after:Ledger,today:string){
  for(const [account,days] of dates)for(const date of [...days,today,'9999-12-31']){
   const amount=totals(after,date).accounts[account]||0;
   if(amount<0&&amount<(totals(before,date).accounts[account]||0)){
-   warnings.add(itemName(after,'account',account)+' would have a lower negative balance: PKR '+(amount/100).toLocaleString('en-PK')+'.');
+   warnings.add(itemName(after,'account',account)+' would have a lower negative balance: '+formatCurrency(amount)+'.');
    break;
   }
  }

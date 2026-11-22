@@ -3,9 +3,10 @@ import {BACKUP_BYTES} from '../../lib/backup-limits';
 import {desktopHost} from '../desktop-host';
 import {useEffect,useState} from 'react';
 import {AuthGate} from '../auth-gate';
+import {useDisplayPreferences} from '../display-preferences';
 import {ThemeSync} from '../theme-sync';
 import {decodeMigrationBackup,migrationSummary} from '../../lib/first-migration';
-function Setup(){const [status,setStatus]=useState<any>(null),[backup,setBackup]=useState<unknown>(null),[summary,setSummary]=useState<unknown>(null),[confirmation,setConfirmation]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
+function Setup(){useDisplayPreferences();const [status,setStatus]=useState<any>(null),[backup,setBackup]=useState<unknown>(null),[summary,setSummary]=useState<unknown>(null),[confirmation,setConfirmation]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);
  async function load(){const r=await fetch('/api/setup',{cache:'no-store'}),j:any=await r.json();if(!r.ok)throw Error(j.error);setStatus(j)}
  useEffect(()=>{load().catch(e=>setError(e.message))},[]);
  useEffect(()=>{desktopHost()?.postMessage(busy?'state:busy':backup?'state:draft':'state:idle')},[busy,backup]);
