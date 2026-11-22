@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- Redesigned the Overview with four summary cards, spending progress and refunds, and an itemized net-worth breakdown.
+
 ## 1.4.0
 
 - Show two decimal places for fractional amounts while keeping whole amounts compact.

@@ -1,6 +1,6 @@
 # Documentation
 
-This branch builds BalanceBook 1.4.0.
+This branch builds BalanceBook 2.0.0.
 
 - [How to use BalanceBook](USER-GUIDE.md)
 - [Build and release](BUILDING.md)

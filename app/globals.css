@@ -780,28 +780,30 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .panel{border-color:var(--border);box-shadow:0 2px 5px rgb(10 20 45 / .04)}
 .panel-heading{padding:13px 16px}
 .panel-heading p{font-size:12px;margin-top:3px}
-.month-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:center;padding:19px 24px;margin-bottom:15px;background:var(--hero-bg);color:var(--hero-text);border:1px solid var(--hero-border);border-radius:11px}
-.month-hero-period{display:block;color:var(--hero-period);font-size:12px;margin-bottom:8px}
-.month-hero h2{font-size:15px;font-weight:550;color:var(--hero-text)}
-.month-hero-amount{font-size:clamp(29px,3.4vw,48px);font-weight:700;line-height:1.16;letter-spacing:-.035em;overflow-wrap:anywhere}
-.month-hero-amount>span{color:var(--hero-accent-2);font-size:.35em;letter-spacing:.02em;font-weight:650}
-.month-hero-detail{border-left:1px solid var(--hero-divider);padding-left:20px;min-width:0}
-.month-hero-values{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.month-hero-values div>span{display:flex;align-items:center;gap:5px;color:var(--hero-muted);font-size:13px}
-.month-hero-values strong{display:block;font-size:clamp(17px,2vw,27px);letter-spacing:-.02em;overflow-wrap:anywhere}
-.month-hero-values svg{color:var(--hero-accent);flex-shrink:0}
-.income-use{margin-top:10px;color:var(--hero-muted);font-size:12px}
-.income-use-track{height:5px;margin-bottom:5px;border-radius:4px;background:var(--hero-track);overflow:hidden}
-.income-use-track i{display:block;height:100%;background:var(--hero-accent)}
-.income-use-track i.over{background:var(--hero-warn)}
-.hero-refunds{color:var(--hero-muted);font-size:12px;margin-top:4px}
+.month-hero{margin-bottom:15px}
+.month-hero-period{display:block;color:var(--text-2);font-size:12px;margin-bottom:8px}
+.month-hero-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.month-hero-card{display:grid;align-content:start;gap:6px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:11px;overflow-wrap:anywhere}
+.month-hero-card h2{display:flex;align-items:center;gap:5px;font-size:15px;font-weight:550}
+.month-hero-card strong{font-size:clamp(19px,2vw,27px);line-height:1.16;letter-spacing:-.02em}
+.month-hero-card strong>small{color:var(--text-2);font-size:.55em;font-weight:500;margin-inline-end:.4em}
+.month-hero-income strong,.month-hero-income svg{color:var(--income-fg)}
+.month-hero-spending strong,.month-hero-spending svg{color:var(--expense-fg)}
+.month-hero-surplus strong{color:var(--accent-text)}
+.month-hero-breakdown,.hero-refunds,.income-use{color:var(--text-2);font-size:12px}
+.month-hero-breakdown{display:grid;gap:3px;margin:2px 0 0}
+.month-hero-breakdown>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:baseline}
+.month-hero-breakdown dd{margin:0;text-align:right;white-space:nowrap}
+.month-hero-card strong{white-space:nowrap}
+.income-use{margin-top:4px}
+.income-use-track{height:5px;margin-bottom:5px;border-radius:4px;background:var(--border);overflow:hidden}
+.income-use-track i{display:block;height:100%;background:var(--accent)}
+.income-use-track i.over{background:var(--expense-fg)}
+.hero-refunds{margin-top:4px}
 .overview-columns{grid-template-columns:minmax(0,1.85fr) minmax(260px,1fr);gap:15px}
 .overview-balances{gap:12px}
 .dashboard-balances>div,.dashboard-balances>button{padding:6px 0;font-size:13px}
 .dashboard-balances>button:hover{background:var(--accent-soft);color:var(--accent-text)}
-.balance-overview-total{padding:0 16px 8px;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:5px;color:var(--accent-text);font-weight:650}
-.balance-overview-total strong{font-size:21px;white-space:nowrap}
-.balance-overview-total small{display:inline;font-size:12px}
 .transactions th{background:var(--surface-3);color:var(--text-2)}
 .transactions td{color:var(--text-2);height:42px;padding-block:5px}
 .transactions td strong,.transactions td.amount{color:var(--text)}
@@ -813,12 +815,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:950px){
  .overview-columns{grid-template-columns:1fr}
 }
-@media(max-width:640px){
- .month-hero{grid-template-columns:1fr;gap:10px;padding:14px}
- .month-hero-detail{padding:9px 0 0;border-left:0;border-top:1px solid var(--hero-divider)}
+@media(max-width:1200px){
+ .month-hero-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(width < 700px){
+ .month-hero-cards{grid-template-columns:1fr}
 }
 @media(forced-colors:active){
- .month-hero,.sidebar{border:1px solid CanvasText}
+ .month-hero-card,.sidebar{border:1px solid CanvasText}
  .income-use-track{border:1px solid CanvasText}
  .income-use-track i{background:CanvasText}
 }

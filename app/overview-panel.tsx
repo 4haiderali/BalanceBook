@@ -10,22 +10,41 @@ export function OverviewPanel({ledger,month,revision,recentActivity,navigate,onT
  navigate:(page:string)=>void;onTransactions:()=>void;useShortcut:(shortcut:Shortcut)=>void;
 }){
  const stats=report(ledger,month),position=totals(ledger);
+ const accounts=Object.values(position.accounts).reduce((sum,balance)=>sum+balance,0);
+ const other=position.netWorth-(accounts+position.receivable-position.payable+position.groupReceivable);
+ const breakdown=[
+  {label:'Accounts',amount:accounts},
+  {label:'People owe you',amount:position.receivable},
+  {label:'You owe people',amount:position.payable},
+  {label:'Group due',amount:position.groupReceivable},
+  {label:'Other',amount:other},
+ ].filter(({amount})=>amount!==0);
+ const currency=currencyLabel();
+ const cardAmount=(amount:number)=><strong>{currency&&<small>{currency}</small>}{money(amount)}</strong>;
  const categories=Object.entries(stats.categories).sort((a,b)=>b[1]-a[1]).slice(0,5);
  const maxOverviewCategory=Math.max(1,...categories.map(([,value])=>Math.abs(value)));
  return <>
  {revision===1&&!ledger.entries.length&&<div className="info-box"><p>Starting with an empty ledger?</p><a className="button" href="/setup/">Import an existing backup</a></div>}
  <section className="month-hero" aria-label="Report month summary">
-  <div className="month-hero-lead"><span className="month-hero-period">{monthName(month)} · Report month</span><h2>{stats.surplus<0?'Monthly deficit':'Monthly surplus'}</h2><div className="month-hero-amount">{currencyLabel()&&<span>{currencyLabel()}</span>} {money(stats.surplus)}</div></div>
-  <div className="month-hero-detail"><div className="month-hero-values">
-   <div><span><ArrowDownLeft size={16}/> Income</span><strong>{money(stats.income)}</strong></div>
-   <div><span><ArrowUpRight size={16}/> Net spending</span><strong>{money(stats.spend)}</strong></div>
-  </div>{stats.income>0&&stats.spend>=0&&<div className="income-use"><div className="income-use-track" aria-hidden="true"><i className={stats.spend>stats.income?'over':''} style={{width:`${Math.min(100,stats.spend/stats.income*100)}%`}}/></div><span>{new Intl.NumberFormat('en-PK',{style:'percent',maximumFractionDigits:1}).format(stats.spend/stats.income)} of income spent</span></div>}
-  {stats.refunds>0&&<small className="hero-refunds">Includes {formatCurrency(stats.refunds)} in refunds</small>}</div>
+  <span className="month-hero-period">{monthName(month)} · Report month</span>
+  <div className="month-hero-cards">
+   <div className="month-hero-card month-hero-income"><h2><ArrowDownLeft size={16} aria-hidden="true"/> Income</h2>{cardAmount(stats.income)}</div>
+   <div className="month-hero-card month-hero-spending">
+    <h2><ArrowUpRight size={16} aria-hidden="true"/> Net spending</h2>{cardAmount(stats.spend)}
+    {stats.income>0&&stats.spend>=0&&<div className="income-use"><div className="income-use-track" aria-hidden="true"><i className={stats.spend>stats.income?'over':''} style={{width:`${Math.min(100,stats.spend/stats.income*100)}%`}}/></div><span>{new Intl.NumberFormat('en-PK',{style:'percent',maximumFractionDigits:1}).format(stats.spend/stats.income)} of income spent</span></div>}
+    {stats.refunds>0&&<small className="hero-refunds">Includes {formatCurrency(stats.refunds)} in refunds</small>}
+   </div>
+   <div className="month-hero-card month-hero-surplus"><h2>{stats.surplus<0?'Deficit':'Surplus'}</h2>{cardAmount(stats.surplus)}</div>
+   <div className="month-hero-card">
+    <h2>Tracked net worth</h2>{cardAmount(position.netWorth)}
+    {breakdown.length>0&&<dl className="month-hero-breakdown">{breakdown.map(({label,amount})=><div key={label}><dt>{label}</dt><dd>{money(amount)}</dd></div>)}</dl>}
+   </div>
+  </div>
  </section>
  <div className="overview-columns">
   <section className="panel activity-panel"><div className="panel-heading"><div><h2>Recent activity</h2><p>Latest entries by actual date</p></div><button className="text-button" onClick={onTransactions}>All transactions <ArrowUpRight size={14}/></button></div>{recentActivity}</section>
   <div className="overview-balances">
-   <section className="panel balance-overview"><div className="panel-heading"><div><h2>Tracked balances</h2><p>All recorded dates{currencyAffix(' · ')}</p></div><button className="text-button" onClick={()=>navigate('accounts')}>Accounts</button></div><div className="balance-overview-total"><span>Tracked net worth</span><strong>{currencyLabel()&&<small>{currencyLabel()}</small>} {money(position.netWorth)}</strong></div><div className="dashboard-balances">{activeItems(ledger,'account').map(a=><div key={a}><span>{itemName(ledger,'account',a)}</span><strong>{money(position.accounts[a]||0)}</strong></div>)}</div></section>
+   <section className="panel balance-overview"><div className="panel-heading"><div><h2>Tracked balances</h2><p>All recorded dates{currencyAffix(' · ')}</p></div><button className="text-button" onClick={()=>navigate('accounts')}>Accounts</button></div><div className="dashboard-balances">{activeItems(ledger,'account').map(a=><div key={a}><span>{itemName(ledger,'account',a)}</span><strong>{money(position.accounts[a]||0)}</strong></div>)}</div></section>
    <section className="panel"><div className="panel-heading"><div><h2>People</h2><p>All recorded dates</p></div></div><div className="dashboard-balances"><button onClick={()=>navigate('people')}><span>People owe you</span><strong>{formatCurrency(position.receivable)}</strong></button><button onClick={()=>navigate('people')}><span>You owe people</span><strong>{formatCurrency(position.payable)}</strong></button><button onClick={()=>navigate('lunch')}><span>Group reimbursements due</span><strong>{formatCurrency(position.groupReceivable)}</strong></button></div></section>
   </div>
  </div>
