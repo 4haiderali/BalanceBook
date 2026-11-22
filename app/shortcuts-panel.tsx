@@ -1,4 +1,5 @@
 'use client';
+import {today} from '../lib/dates';
 import {formatMoney as money,formatDate,formatCurrency} from '../lib/display-format';
 import {parseAmount} from '../lib/money-input';
 import {activeItems,itemName,preferredItem} from '../lib/ledger-items';
@@ -6,7 +7,6 @@ import {useState} from 'react';
 import {X,Plus} from 'lucide-react';
 import type {Ledger,Entry} from '../lib/ledger';
 import {saveShortcut,shortcutFromEntry,completeShortcut,type Shortcut} from '../lib/shortcuts';
-const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Karachi'});
 export function ShortcutsPanel({ledger:l,onUse,onReview}:{ledger:Ledger;onUse:(s:Shortcut)=>void;onReview:(l:Ledger,reason:string)=>void}){
  const [editor,setEditor]=useState<Shortcut|null>(null),[amount,setAmount]=useState(''),[error,setError]=useState(''),[linkId,setLinkId]=useState(''),[selected,setSelected]=useState('');const now=today();
  function edit(s?:Shortcut){const s0=s||{id:crypto.randomUUID(),name:'',description:'',kind:'expense' as const,category:preferredItem(l,'category','Food'),account:preferredItem(l,'account','Alfalah'),amount:0,recurring:false,nextDue:now,paused:false};setEditor(s0);setAmount(s0.amount?String(s0.amount/100):'');setError('')}

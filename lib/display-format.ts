@@ -1,3 +1,5 @@
+import {KARACHI_TIME_ZONE} from './dates';
+
 export const CURRENCY='PKR';
 export const DISPLAY_OPTIONS={
  dateStyle:['short','slash','iso'],
@@ -33,11 +35,11 @@ const numberFormats=Object.fromEntries(DISPLAY_OPTIONS.grouping.map(grouping=>{
 }));
 export const currencyLabel=()=>preferences.currency==='none'?'':preferences.currency;
 export const currencyAffix=(before:string,after='')=>currencyLabel()?before+currencyLabel()+after:'';
-export const formatMoney=(cents:number)=>numberFormats[preferences.grouping][preferences.decimals].format(cents/100);
+export const formatMoney=(cents:number)=>numberFormats[preferences.grouping][preferences.decimals==='always'||cents%100!==0?'always':'auto'].format(cents/100);
 export const formatExactMoney=(cents:number)=>numberFormats[preferences.grouping].always.format(cents/100);
 export const formatCurrency=(cents:number)=>currencyAffix('',' ')+formatMoney(cents);
 export const formatExactCurrency=(cents:number)=>currencyAffix('',' ')+formatExactMoney(cents);
-const numericDateTime=new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZone:'Asia/Karachi'});
+const numericDateTime=new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZone:KARACHI_TIME_ZONE});
 
 export const monthName=(v:string)=>new Date(v+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'});
 
@@ -51,7 +53,7 @@ export const formatDate=(iso:string)=>{
   if(preferences.dateStyle==='slash')return iso.split('-').reverse().join('/');
   return dateOnly.format(date);
 };
-const dateTime=new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Karachi'});
+const dateTime=new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:KARACHI_TIME_ZONE});
 // A saved/checked timestamp -> "21 Nov 2026, 23:06" in Pakistan time, matching today() in the app.
 export const formatDateTime=(value:string|number|Date)=>{
   const date=new Date(value);

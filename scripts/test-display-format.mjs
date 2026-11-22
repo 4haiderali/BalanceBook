@@ -8,12 +8,19 @@ for(const amount of [0,13307006,6621600,-13307006,123456789]){
 }
 assert.equal(formatMoney(13307006),'133,070.06');
 assert.equal(formatMoney(6621600),'66,216');
+assert.equal(formatMoney(41799010),'417,990.10');
+assert.equal(formatMoney(462000),'4,620');
+assert.equal(formatMoney(13286006),'132,860.06');
+assert.equal(formatCurrency(123456750),'PKR 1,234,567.50');
 assert.equal(formatDate('2026-11-21'),'21 Nov 2026');
 const timestamp='2026-11-21T18:06:00Z';
 assert.equal(formatDateTime(timestamp),'21 Nov 2026, 23:06');
 
 setDisplayPreferences({grouping:'south-asian',currency:'Rs',dateStyle:'slash'});
 assert.equal(formatMoney(133070006),'13,30,700.06');
+assert.equal(formatMoney(41799010),'4,17,990.10');
+assert.equal(formatMoney(462000),'4,620');
+assert.equal(formatMoney(13286006),'1,32,860.06');
 assert.equal(formatCurrency(123400),'Rs 1,234');
 assert.equal(formatExactMoney(123400),'1,234.00');
 assert.equal(formatDate('2026-11-21'),'21/11/2026');

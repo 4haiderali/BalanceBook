@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+- Show two decimal places for fractional amounts while keeping whole amounts compact.
+- Clear stale categories from balance adjustments on load and save, preserving balances and reports.
+- Share the Karachi date helper across the app.
+
 ## 1.3.0
 
 - Move Backup & recovery and Help & guide into Settings.

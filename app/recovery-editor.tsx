@@ -1,4 +1,5 @@
 'use client';
+import {today} from '../lib/dates';
 import {formatMoney as money,formatDate,currencyAffix,formatCurrency} from '../lib/display-format';
 import {parseAmount} from '../lib/money-input';
 import {activeItems,itemName,preferredItem} from '../lib/ledger-items';
@@ -10,7 +11,7 @@ import {categoryNames} from '../lib/categories';
 import {prepareEntry} from '../lib/v2';
 export const recovered=linkedRecovered;
 export function RecoveryEditor({ledger:l,expenseId,kind,entry,defaultCategory,onClose,onReview,onExistingRefund}:{ledger:Ledger;expenseId?:string;kind:string;defaultCategory?:string;entry?:Entry;onExistingRefund:(refundId:string,expenseId:string)=>void;onClose:()=>void;onReview:(l:Ledger,reason:string)=>void}){
- const original=l.entries.find(e=>e.id===expenseId);const date=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Karachi'});
+ const original=l.entries.find(e=>e.id===expenseId);const date=today();
  const [form,setForm]=useState({date:entry?.date||date,month:entry?.month||date.slice(0,7),description:entry?.description||(kind==='officeRecovery'?'Office reimbursement':'Merchant refund'),account:entry?.account||preferredItem(l,'account','Alfalah'),notes:entry?.notes||'',reason:''});
  const [parts,setParts]=useState(entry?.recoveries?.map(x=>({...x,amount:String(x.amount/100)}))||[{expenseId:expenseId||'',category:original?.category||defaultCategory||preferredItem(l,'category','Health'),amount:''}]);const [error,setError]=useState(''),[query,setQuery]=useState('');
  const expenses=l.entries.filter(e=>!e.deleted&&e.effects.spend>0&&!e.effects.spendByCategory&&e.category&&categoryNames(l).includes(e.category)).sort((a,b)=>b.date.localeCompare(a.date));

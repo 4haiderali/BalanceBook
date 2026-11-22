@@ -1,4 +1,5 @@
 'use client';
+import {today} from '../lib/dates';
 import {formatMoney as money,formatDate,currencyAffix,currencyLabel,formatCurrency} from '../lib/display-format';
 import {PersonSelect} from './person-select';
 import {parseAmount} from '../lib/money-input';
@@ -9,7 +10,6 @@ import {ACCOUNTS,emptyEffects,totals,type Entry,type Ledger} from '../lib/ledger
 import {groupAssignments,groupReceipts} from '../lib/groups';
 import {personName,prepareEntry,resolvePerson} from '../lib/v2';
 import {recordGroup} from '../lib/group-actions';
-const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Karachi',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 const rupees=(v:number)=>String(v/100);
 const cents=parseAmount;
 const estimate=(v:string)=>{try{return cents(v||'0')}catch{return 0}};

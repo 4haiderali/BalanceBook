@@ -1,4 +1,5 @@
 'use client';
+import {today as karachiToday} from '../lib/dates';
 import {formatMoney as money,formatDate,formatDateTime,currencyAffix,formatCurrency} from '../lib/display-format';
 import {parseAmount} from '../lib/money-input';
 import {activeItems,itemName,preferredItem} from '../lib/ledger-items';
@@ -7,7 +8,7 @@ import {type Ledger} from '../lib/ledger';
 import {reviewData,updateReview,addCheckpoint,checkpointView,resolveCheckpoint,splitCurrent,splitwiseTiming,foodCoverage,reviewSuggestions,REVIEW_FROM,inReviewFocus,type ReviewItem} from '../lib/review';
 const cents=(value:string)=>parseAmount(value,true);
 export function ReviewPanel({ledger:l,month,onReview,onEntry,onFood}:{ledger:Ledger;month:string;onReview:(l:Ledger,reason:string)=>void;onEntry:(id:string)=>void;onFood:(from:string,to:string)=>void}){
- const r=reviewData(l),timing=splitwiseTiming(l,month);const today=new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Karachi'});
+ const r=reviewData(l),timing=splitwiseTiming(l,month);const today=karachiToday();
  const [tab,setTab]=useState('balances'),[error,setError]=useState(''),[reason,setReason]=useState(''),[checkpoint,setCheckpoint]=useState({account:preferredItem(l,'account','Alfalah'),date:today,actual:''}),[split,setSplit]=useState({date:today,alfalah:'',nayapay:''}),[range,setRange]=useState({from:month+'-01',to:today}),[title,setTitle]=useState('');
  const [visibleSuggestions,setVisibleSuggestions]=useState(10);
  const [selected,setSelected]=useState(''),[classification,setClassification]=useState<ReviewItem['classification']>('estimate'),[foodEntry,setFoodEntry]=useState('');
