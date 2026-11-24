@@ -45,7 +45,7 @@ export class ReplayError extends Error{
  }
 }
 export function makeEntry(raw:Omit<Entry,'effects'>,l:Ledger,state?:ReplayState):Entry{
- const e={...raw,category:raw.kind==='transfer'?'':raw.category,effects:emptyEffects()};const f=e.effects,a=e.amount,p=e.person;const acct=(n:number)=>add(f.accounts,e.account,n);
+ const e={...raw,category:raw.kind==='transfer'||raw.kind==='adjustment'?'':raw.category,effects:emptyEffects()};const f=e.effects,a=e.amount,p=e.person;const acct=(n:number)=>add(f.accounts,e.account,n);
  if(!Number.isSafeInteger(a)||a<=0)throw Error('Enter an amount greater than zero with at most two decimal places.');
  if(!/^\d{4}-\d{2}-\d{2}$/.test(e.date)||!Number.isFinite(Date.parse(e.date))||new Date(e.date+'T00:00:00Z').toISOString().slice(0,10)!==e.date||e.date<l.baselineDate)throw Error('Use a valid actual date on or after the balance baseline.');
  if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(e.month))throw Error('Choose a report month.');

@@ -35,3 +35,21 @@ export function useDisplayPreferences(){
  },[]);
  return preferences;
 }
+
+const TRANSACTION_DENSITY_KEY='balancebook-transaction-density';
+export type TransactionDensity='comfortable'|'compact';
+
+export function readTransactionDensity():TransactionDensity{
+ try{
+  const cookie=document.cookie.split('; ').find(part=>part.startsWith(TRANSACTION_DENSITY_KEY+'='));
+  const value=cookie?.slice(TRANSACTION_DENSITY_KEY.length+1);
+  if(value==='comfortable'||value==='compact')return value;
+ }catch{}
+ try{if(window.localStorage.getItem(TRANSACTION_DENSITY_KEY)==='compact')return 'compact'}catch{}
+ return 'comfortable';
+}
+
+export function saveTransactionDensity(value:TransactionDensity){
+ try{document.cookie=TRANSACTION_DENSITY_KEY+'='+value+'; Max-Age='+MAX_AGE+'; Path=/; SameSite=Lax'}catch{}
+ try{window.localStorage.setItem(TRANSACTION_DENSITY_KEY,value)}catch{}
+}

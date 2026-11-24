@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.1.0
+
+- Refine the Windows layout, with a consistent page header, keyboard focus, and shared controls in light and dark modes.
+- Align Overview summary cards and financial figures, shorten month comparisons, and make the six-month income and net spending chart more compact.
+- Streamline transaction filters and dates, preserve Compact and Comfortable density, and separate transaction details from balance effects and change history.
+- Clarify account balances and share bars, personal loans and repayments, and completed group payments. Keep settlement details available and give People history a single vertical scroll area.
+- Improve category summaries, report readability, reconciliation and Settings layouts, and the proportions of recurring shortcut cards.
+- Use in-app confirmations for discarding or replacing transaction drafts, with focus returning to the relevant control.
+- Strengthen Windows upgrade checks. Setup requires a matching ledger comparison and creates a recovery copy before replacing program files in a readable-ledger upgrade.
+
+## 2.0.0
+
+- Redesigned the Overview with four summary cards, spending progress and refunds, and an itemized net-worth breakdown.
+
+## 1.4.0
+
+- Show two decimal places for fractional amounts while keeping whole amounts compact.
+- Clear stale categories from balance adjustments on load and save, preserving balances and reports.
+- Share the Karachi date helper across the app.
+
 ## 1.3.0
 
 - Move Backup & recovery and Help & guide into Settings.

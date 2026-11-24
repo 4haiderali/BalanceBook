@@ -1,7 +1,7 @@
 import {reflow,type Entry,type Ledger} from './ledger';
 import {deleteEntry} from './v2';
 
-export const UNDO_MS=60_000;
+export const UNDO_MS=15_000;
 export type TransactionUndo={revision:number;expires:number;entry:Entry;before?:Entry};
 
 export function createTransactionUndo(before:Ledger,after:Ledger,revision:number,now=Date.now()):TransactionUndo|null{

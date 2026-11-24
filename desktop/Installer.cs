@@ -190,15 +190,18 @@ internal static class Installer
                 report("Reading a copy of your existing ledger…");
                 string baseline = Path.Combine(probe, "Before");
                 DesktopFiles.CopyFolder(data, Path.Combine(baseline, "Data"));
-                before = LedgerFingerprint(target, baseline);
-                verification = "Ledger comparison was unavailable.";
+                // A reinstall can retain data after the previous binaries have been removed.
+                string baselineProgram = Directory.Exists(target) ? target : staging;
+                before = LedgerFingerprint(baselineProgram, baseline);
             }
 
             report("Checking that BalanceBook opens…");
             string failure = Probe(staging, probe);
-            if (failure == null && before != null)
+            if (failure == null && hasLedger)
             {
                 report("Comparing ledger data…");
+                if (before == null)
+                    throw new IOException("Setup could not read the ledger comparison from the previous installation. Your existing installation and data were kept.");
                 string after = LedgerFingerprint(Path.Combine(probe, "Program"), probe);
                 if (after == null || before != after)
                     throw new IOException("Setup could not verify that the update opens the same ledger. Your existing installation and data were kept.");
@@ -285,7 +288,7 @@ internal static class Installer
     {
         string node = Path.Combine(program, "node.exe");
         if (!File.Exists(node)) return null;
-        string ready = Path.Combine(sandbox, "fingerprint.port");
+        string ready = Path.Combine(Path.GetTempPath(), "haider-money-fingerprint-" + Guid.NewGuid().ToString("N") + ".port");
         string token = Guid.NewGuid().ToString("N");
         var start = new ProcessStartInfo(node, "server.mjs")
         {
@@ -335,6 +338,18 @@ internal static class Installer
         catch (WebException) { return null; }
         catch (System.ComponentModel.Win32Exception) { return null; }
         catch (InvalidOperationException) { return null; }
+        finally
+        {
+            DeleteFingerprintMarker(ready);
+            DeleteFingerprintMarker(ready + ".tmp");
+        }
+    }
+
+    private static void DeleteFingerprintMarker(string path)
+    {
+        try { File.Delete(path); }
+        catch (IOException) { }
+        catch (UnauthorizedAccessException) { }
     }
 
     private static string Probe(string source, string probe)

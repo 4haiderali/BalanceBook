@@ -1,4 +1,5 @@
 'use client';
+import {today} from '../lib/dates';
 import {formatMoney as money,formatDate,currencyAffix,formatCurrency} from '../lib/display-format';
 import {parseAmount} from '../lib/money-input';
 import {activeItems,itemName} from '../lib/ledger-items';
@@ -7,7 +8,6 @@ import {X} from 'lucide-react';
 import {totals,type Ledger} from '../lib/ledger';
 import {accountType} from '../lib/accounts';
 import {parkingSummary,savingsTransfers,createParkingTransfer,setParkingLinks} from '../lib/parking';
-const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Karachi'});
 const monthName=(month:string)=>new Date(month+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'});
 const cents=(value:string)=>{const n=parseAmount(value);if(n<=0)throw Error('Enter a positive amount.');return n};
 export function MonthEnd({ledger:l,month,onReview,onLink,onView}:{ledger:Ledger;month:string;onReview:(next:Ledger,reason:string)=>void;onLink:(id?:string)=>void;onView:(id:string)=>void}){
