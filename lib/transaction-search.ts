@@ -1,4 +1,5 @@
 import {parseAmount} from './money-input';
+import {CATEGORIES} from './ledger';
 import type {Entry} from './ledger';
 
 export function transactionSearch(query:string){
@@ -8,7 +9,8 @@ export function transactionSearch(query:string){
  const local=/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/.exec(text);
  const date=local?local[3]+'-'+local[2].padStart(2,'0')+'-'+local[1].padStart(2,'0'):text;
  const period=/^\d{4}-\d{2}(?:-\d{2})?$/.test(date);
- return (entry:Entry,description:string)=>!text||entry.amount===amount
+ const category=CATEGORIES.find(name=>name.toLowerCase()===text);
+ return (entry:Entry,description:string)=>category?entry.category.toLowerCase()===text||Object.keys(entry.effects.spendByCategory??{}).some(name=>name.toLowerCase()===text):!text||entry.amount===amount
   ||(period&&(entry.date===date||entry.month===date||(date.length===7&&entry.date.startsWith(date+'-'))))
   ||description.toLowerCase().includes(text);
 }

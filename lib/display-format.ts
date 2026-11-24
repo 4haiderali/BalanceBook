@@ -51,14 +51,14 @@ export const formatDate=(iso:string)=>{
   if(Number.isNaN(date.getTime()))return iso;
   if(preferences.dateStyle==='iso')return iso;
   if(preferences.dateStyle==='slash')return iso.split('-').reverse().join('/');
-  return dateOnly.format(date);
+  return dateOnly.format(date).replace(/\bSept\b/,'Sep');
 };
 const dateTime=new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false,timeZone:KARACHI_TIME_ZONE});
 // A saved/checked timestamp -> "21 Nov 2026, 23:06" in Pakistan time, matching today() in the app.
 export const formatDateTime=(value:string|number|Date)=>{
   const date=new Date(value);
   if(Number.isNaN(date.getTime()))return String(value);
-  if(preferences.dateStyle==='short')return dateTime.format(date);
+  if(preferences.dateStyle==='short')return dateTime.format(date).replace(/\bSept\b/,'Sep');
   const parts=Object.fromEntries(numericDateTime.formatToParts(date).map(({type,value})=>[type,value]));
   const time=parts.hour+':'+parts.minute;
   return preferences.dateStyle==='iso'

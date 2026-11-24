@@ -18,9 +18,9 @@ A local-first Windows money ledger for people who want to record expenses, trans
 
 ## Download for Windows
 
-**[Download the single-file installer](https://github.com/4haiderali/BalanceBook/releases/latest)** — choose the file ending in `Setup-x64.exe`. This branch builds version **2.0.0**. No separate payload folder is required.
+**[Download the single-file installer](https://github.com/4haiderali/BalanceBook/releases/latest)** — choose the file ending in `Setup-x64.exe`. This branch builds version **2.1.0**. No separate payload folder is required.
 
-The installer is **unsigned**. Windows may show Unknown Publisher or SmartScreen. Only run a download you trust; compare its SHA-256 with the release checksum using `Get-FileHash .\BalanceBook-2.0.0-Setup-x64.exe -Algorithm SHA256`. A matching checksum verifies file integrity, not publisher identity. Microsoft Edge WebView2 Runtime is required.
+The installer is **unsigned**. Windows may show Unknown Publisher or SmartScreen. Only run a download you trust; compare its SHA-256 with the release checksum using `Get-FileHash .\BalanceBook-2.1.0-Setup-x64.exe -Algorithm SHA256`. A matching checksum verifies file integrity, not publisher identity. Microsoft Edge WebView2 Runtime is required.
 
 ## How to use BalanceBook
 

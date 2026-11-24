@@ -15,8 +15,8 @@ function appearance(entry:Entry){
  return {tone,Icon,transfer,kind:entry.legacyType||KINDS[entry.kind]||entry.kind};
 }
 
-export function TransactionCells({entry,ledger,onOpen,displayAmount=entry.amount,context}:{
- entry:Entry;ledger:Ledger;onOpen:()=>void;displayAmount?:number;context?:string;
+export function TransactionCells({entry,ledger,onOpen,displayAmount=entry.amount,context,showIconTitle=false,showDeletedBadge=false}:{
+ entry:Entry;ledger:Ledger;onOpen:()=>void;displayAmount?:number;context?:string;showIconTitle?:boolean;showDeletedBadge?:boolean;
 }){
  const {tone,Icon,transfer,kind}=appearance(entry);
  const incomingAccounts=transfer&&!entry.to?Object.entries(entry.effects.accounts).filter(([,value])=>value>0):[];
@@ -26,9 +26,9 @@ export function TransactionCells({entry,ledger,onOpen,displayAmount=entry.amount
  const category=transfer?'—':itemName(ledger,'category',entry.category)||'—';
  return <>
   <td><button className="transaction-name transaction-open" onClick={onOpen} aria-label={'Open transaction: '+entry.description+destinationLabel}>
-   <span className={'tx-icon '+tone}><Icon size={15} aria-hidden="true"/></span>
-   <div><strong>{entry.description}</strong>
-    <small className="transaction-caption"><span className={'transaction-type '+tone}>{entry.deleted?'Deleted':kind}</span>{entry.kind==='legacy'?' · Excel':''}{destinationLabel}{person?' · '+person:''}</small>
+   <span className={'tx-icon '+tone} title={showIconTitle?kind:undefined}><Icon size={15} aria-hidden="true"/></span>
+   <div><strong>{entry.description}</strong>{showDeletedBadge&&entry.deleted&&<span className="transaction-deleted-badge">Deleted</span>}
+    <small className="transaction-caption"><span className={'transaction-type '+tone}>{entry.deleted&&!showDeletedBadge?'Deleted':kind}</span>{entry.kind==='legacy'?' · Excel':''}{destinationLabel}{person?' · '+person:''}</small>
     {context&&<small>{context}</small>}
    </div>
   </button></td>

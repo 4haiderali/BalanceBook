@@ -37,7 +37,7 @@ export function LedgerItemActions({ledger,kind,itemKey,onSave,balance=0,extraAct
   </form>}
   {(account||!editing)&&<div className="button-row">
    {!account&&<button className="button" disabled={busy} onClick={()=>{setName(label);setError('');setEditing(true)}}>Rename</button>}
-   <button className="button" disabled={busy||(!archived&&!!balance)} title={balance?'Settle this account before archiving':undefined} onClick={()=>void apply(archived?'restore':'archive')}>{archived?'Restore':'Archive'}</button>
+   <button className={!account&&!archived?'text-button category-archive-action':'button'} disabled={busy||(!archived&&!!balance)} title={balance?'Settle this account before archiving':undefined} onClick={()=>void apply(archived?'restore':'archive')}>{archived?'Restore':'Archive'}</button>
    {!itemHasHistory(ledger,kind,itemKey)&&<button className="button" disabled={busy} onClick={()=>{if(window.confirm('Delete '+label+'?'))void apply('delete')}}>Delete</button>}
    {extraActions}
    {account&&<button type="submit" form={formId} className="button primary account-editor-save" disabled={busy||unchanged}>Save changes</button>}
